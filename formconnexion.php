@@ -1,6 +1,21 @@
 <?php
 
 
+print_r($_COOKIE);
+
+
+if(isset($_COOKIE['']) AND !empty($_COOKIE[''])) {
+	setcookie('pageColor', $_POST['color'], time()+3600, null, null, false, true);
+}
+if(isset($_POST['color'])) {
+	$pageColor = $_POST['color'];
+}elseif(isset($_COOKIE['pageColor'])){
+	$pageColor= $_COOKIE['pageColor'];
+}else {
+	$pageColor='white';
+}
+
+
 if(!empty($_POST)){
 	if(isset($_POST['email']) AND !empty($_POST['email'])){
 
