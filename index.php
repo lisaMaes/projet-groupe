@@ -1,6 +1,24 @@
 <?php
 include('connexion.inc.php');
 
+$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$response = $bdd->query('SELECT * FROM restaurants ORDER BY name');
+
+$data = $response->fetchAll(PDO::FETCH_ASSOC);
+
+$response->closeCursor();
+
+
+
+$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$response1 = $bdd->query('SELECT * FROM restaurants ORDER BY RAND() LIMIT 6');
+
+$data1 = $response1->fetchAll(PDO::FETCH_ASSOC);
+
+$response1->closeCursor();
+
 
 ?>
 
@@ -37,9 +55,38 @@ include('connexion.inc.php');
 			</div>
 
 			<div class="row">
-				<div class="col-md-offset-2 col-md-8">
+				<div class="col-md-8">
+					
+					<?php 
+						if(!empty($data1))
 
+							foreach ($data1 as $value) {
+								
+								echo'<div class="col-md-2 restaurant">'.htmlspecialchars($value['name']).'</div>';
 
+							}
+
+					 ?>
+										
+
+				</div>
+
+				<div class="col-md-2">
+					<?php  
+						if (!empty($data)) {
+
+							echo '<ul>'; 
+
+							foreach ($data as $value) {
+
+								echo "<li>".htmlspecialchars($value['name']) ."</li>";
+								}
+
+							echo'</ul>';
+
+							}
+							
+						?>
 
 				</div>
 			</div>
