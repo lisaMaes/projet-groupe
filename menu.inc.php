@@ -9,10 +9,10 @@
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 							<ul class="nav navbar-nav">
 								<li>
-									<a href="liste-cgu.php">Cartes Graphiques</a>
+									<a href="#">Liste</a>
 								</li>
 								<li>
-									<a href="liste-coins.php".php">Cryptomonnaies</a>
+									<a href="#".php">Connexion</a>
 								</li>
 								<li>
 									<a href="#">Contact</a>
@@ -45,14 +45,14 @@
 	</ul>
 </li> -->
 </ul>
-<!-- <form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right" role="search">
 	<div class="form-group">
 		<input type="text" class="form-control" />
 	</div> 
 	<button type="submit" class="btn btn-default">
-		Submit
+		Rechercher
 	</button>
-</form> -->
+</form>
 
 </div>
 
