@@ -25,15 +25,15 @@ if (!empty($_POST)) {
 				array($pseudo)
 				);
 
-				if($response->rowCount == 0) {
+			if($response->rowCount == 0) {
 
-					$success = true;
+				$success = true;
 				
-				}else{
+			}else{
 
-					$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
+				$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
 
-				}
+			}
 
 			$response->closeCursor();
 
@@ -99,16 +99,16 @@ if (!empty($_POST)) {
 	}
 
 	if($response->rowCount() != 0){
-        
-            $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
 
-            $response->closeCursor();
+		$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectué.';
 
-        }else{
+		$response->closeCursor();
 
-            $errors[] = 'L\'ajout n\'a pas pu être effectuée.';
+	}else{
 
-        }
+		$errors[] = 'L\'ajout n\'a pas pu être effectué.';
+
+	}
 
 
 }
@@ -133,7 +133,7 @@ if (!empty($_POST)) {
 
 	<header>
 		<h1>
-			Eat-eee !! - Inscriptions
+			Eat-eee !! - Inscription
 		</h1>
 	</header> 
 
@@ -151,64 +151,64 @@ if (!empty($_POST)) {
 				<div class="col-md-offset-2 col-md-8">
 
 					<?php 
-						if(isset($errors)){
+					if(isset($errors)){
 
-							foreach ($errors as $error) {
+						foreach ($errors as $error) {
 
 							echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
-							}
 						}
+					}
 
-						if(isset($success)){
+					if(isset($success)){
 
 
-							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
-						}
-					 ?>
+						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+					}
+					?>
 
 					<form class="form-horizontal" action="" method="POST">
 						<fieldset>
 
-						<!-- Form Name -->
+							<!-- Form Name -->
 							<legend>Rejoignez-nous</legend>
 
 							<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
-									<div class="col-md-4">
-										<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
+								<div class="col-md-4">
+									<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="email">Email</label>  
-									<div class="col-md-4">
-										<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="email">Email</label>  
+								<div class="col-md-4">
+									<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="password">Mot de passe</label>  
-									<div class="col-md-4">
-										<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="password">Mot de passe</label>  
+								<div class="col-md-4">
+									<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Button -->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="button"></label>
-									<div class="col-md-4">
-										<button id="button" name="button" class="btn btn-info">Valider</button>
-									</div>
+							<!-- Button -->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="button"></label>
+								<div class="col-md-4">
+									<button id="button" name="button" class="btn btn-info">Valider</button>
 								</div>
+							</div>
 
-							</fieldset>
-						</form>
+						</fieldset>
+					</form>
 
 
 				</div>
