@@ -22,7 +22,7 @@ include('connexion.inc.php');
 
 	<header>
 		<h1>
-			Dashbord CGU / Coins
+			Eat-eee !! -Inscriptions
 		</h1>
 	</header> 
 
