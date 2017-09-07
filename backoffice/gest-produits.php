@@ -357,7 +357,7 @@ else
 								
 								<?php if(!empty($image)){
 
-										echo '<img src="../img_restau/'.$image.'"><br><br>';
+										echo '<img src="../img_restau/'.htmlspecialchars($image).'"><br><br>';
 
 									} 
 									?>
