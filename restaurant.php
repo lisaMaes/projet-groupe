@@ -14,18 +14,36 @@ else
 }
 
 // Permet d'afficher les infos de la fiche restau si ID existe
+require('include/connexion.inc.php');
 
 if ($strId>0 && $strId<=9999999999)
 {
 
-	$requete=$bdd->prepare('SELECT * FROM users WHERE ID=?');
+	$requete=$bdd->prepare('SELECT * FROM restaurants WHERE ID=?');
 	$requete->execute(array($strId));
 	$resultat=$requete->fetch(PDO::FETCH_ASSOC);
 
-	$pseudo= $resultat['pseudo'];
-	$email= $resultat['email'];
+	if($requete->rowCount() > 0){
 
-	requete->closeCursor();	
+	$strLibelle=$resultat['name'];
+	$strAdresse=$resultat['adress'];
+	$strCP=$resultat['zipcode'];
+	$strVille=$resultat['city'];
+	$strTelephone=$resultat['telephone'];
+	$image=$resultat['image'];
+
+	$requete->closeCursor();
+
+}else{
+
+		$errors = "Ce restaurant n'existe pas";
+
+	}
+
+}else{
+
+	$errors = "Il n'y a pas de restaurant a affiché";
+
 }
 ?>
 <!DOCTYPE html>
@@ -47,7 +65,10 @@ if ($strId>0 && $strId<=9999999999)
 
 	<header>
 		<h1>
-			Eat-eee !! Bienvenue <?php echo $pseudo; ?>
+			Eat-eee !! <?php 
+			if(!isset($errors)){
+			echo htmlspecialchars($strLibelle); 
+			}?>
 		</h1>
 	</header> 
 
@@ -62,11 +83,35 @@ if ($strId>0 && $strId<=9999999999)
 			</div>
 
 			<div class="row">
-				<div class="col-md-offset-2 col-md-8">
+				<div class="col-md-12">
+					
+						<?php
+						//traitement d'affichage 
+						if(isset($errors)){
 
-					<h2>Pseudo : <?php echo $pseudo; ?></h2>
+							echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
 
-					<p>Email : <?php echo $email; ?></p>
+						}else{
+ 
+					?>
+
+					<h2><?php echo htmlspecialchars($strLibelle); ?></h2>
+
+					<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?></div>
+
+					<div class="col-md-2">
+						<h3>Contacts</h3>
+						<?php echo	htmlspecialchars($strTelephone) ?><br><br>
+						<?php echo htmlspecialchars($strAdresse) ?><br>	
+						<?php echo htmlspecialchars($strCP).' '. htmlspecialchars($strVille)?>
+				
+					</div>
+
+					<?php
+
+						}
+					 ?>
+					
 
 				</div>
 			</div>

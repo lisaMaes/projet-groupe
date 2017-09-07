@@ -26,8 +26,8 @@ if ($strId>0 && $strId<=9999999999)
 
 	if($requete->rowCount() > 0){
 
-		$pseudo= htmlspecialchars($resultat['pseudo']);
-		$email= htmlspecialchars($resultat['email']);
+		$pseudo= $resultat['pseudo'];
+		$email= $resultat['email'];
 
 		$requete->closeCursor();	
 	
@@ -39,7 +39,7 @@ if ($strId>0 && $strId<=9999999999)
 
 }else{
 
-	$errors = "Il n'y a pas d'utilisateur à affiché";
+	$errors = "Il n'y a pas d'utilisateur a affiché";
 
 }
 ?>
@@ -65,7 +65,7 @@ if ($strId>0 && $strId<=9999999999)
 			Eat-eee !! Bienvenue <?php
 
 			if(!isset($errors)){
-			 echo $pseudo; 
+			 echo htmlspecialchars($pseudo); 
 
 			 }?>
 			
@@ -90,15 +90,15 @@ if ($strId>0 && $strId<=9999999999)
 					<?php 
 						if(isset($errors)){
 
-							echo '<div class="alert alert-danger" role=alert>'.$errors.'</div>';
+							echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
 
 						}else{
  
 					?>
 
-					<h2>Pseudo : <?php echo $pseudo; ?></h2>
+					<h2>Pseudo : <?php echo htmlspecialchars($pseudo); ?></h2>
 
-					<p>Email : <?php echo $email; ?></p>
+					<p>Email : <?php echo htmlspecialchars($email); ?></p>
 
 					<?php
 
