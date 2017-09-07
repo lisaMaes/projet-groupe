@@ -1,17 +1,17 @@
 <?php
-//recupère l'id
-if (isset($_POST['ID']))
+session_start();
+
+
+if(isset($_SESSION['USER']['ID']) && !empty($_SESSION['USER']['ID']))
 {
-	$strId=filter_var($_POST['ID'],FILTER_VALIDATE_INT);
-}
-elseif (isset($_GET['ID']))
-{
-	$strId=filter_var($_GET['ID'],FILTER_VALIDATE_INT);
+	$strId=$_SESSION['USER']['ID'];
 }
 else
 {
 	$strId=0;
 }
+
+
 
 // Permet d'afficher les infos de la fiche restau si ID existe
 
@@ -30,7 +30,7 @@ if ($strId>0 && $strId<=9999999999)
 		$email= $resultat['email'];
 
 		$requete->closeCursor();	
-	
+
 	}else{
 
 		$errors = "Cet utilisateur n'existe pas";
@@ -65,9 +65,9 @@ if ($strId>0 && $strId<=9999999999)
 			Eat-eee !! Bienvenue <?php
 
 			if(!isset($errors)){
-			 echo htmlspecialchars($pseudo); 
+				echo htmlspecialchars($pseudo); 
 
-			 }?>
+			}?>
 			
 		</h1>
 	</header> 
@@ -88,22 +88,22 @@ if ($strId>0 && $strId<=9999999999)
 					
 
 					<?php 
-						if(isset($errors)){
+					if(isset($errors)){
 
-							echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
+						echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
 
-						}else{
- 
+					}else{
+
+						?>
+
+						<h2>Pseudo : <?php echo htmlspecialchars($pseudo); ?></h2>
+
+						<p>Email : <?php echo htmlspecialchars($email); ?></p>
+
+						<?php
+
+					}
 					?>
-
-					<h2>Pseudo : <?php echo htmlspecialchars($pseudo); ?></h2>
-
-					<p>Email : <?php echo htmlspecialchars($email); ?></p>
-
-					<?php
-
-						}
-					 ?>
 
 				</div>
 			</div>
