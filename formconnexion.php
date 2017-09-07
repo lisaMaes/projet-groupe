@@ -1,22 +1,10 @@
 <?php
 
 
-print_r($_COOKIE);
-
-
-if(isset($_COOKIE['']) AND !empty($_COOKIE[''])) {
-	setcookie('pageColor', $_POST['color'], time()+3600, null, null, false, true);
-}
-if(isset($_POST['color'])) {
-	$pageColor = $_POST['color'];
-}elseif(isset($_COOKIE['pageColor'])){
-	$pageColor= $_COOKIE['pageColor'];
-}else {
-	$pageColor='white';
-}
-
-
+//verifie que le formulaire soit rempli
 if(!empty($_POST)){
+
+//verifie le champ email
 	if(isset($_POST['email']) AND !empty($_POST['email'])){
 
 		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
@@ -28,7 +16,7 @@ if(!empty($_POST)){
 		$errors[] = "Veuillez remplir l'email'!";
 	}
 
-
+//verifie le champ mot de passe
 	if(isset($_POST['password']) AND !empty($_POST['password'])){
 
 		if(!preg_match('#^.{3,50}$#i', $_POST['password'])){
@@ -40,8 +28,9 @@ if(!empty($_POST)){
 		$errors[] = "Veuillez remplir le mot de passe!";
 	}
 
-
+//si bien rempli et valide
 	if(!isset($errors)){
+		//connexion a la base de données
 		include('include/connexion.inc.php');
 		
 		$response = $bdd->prepare("SELECT password FROM users WHERE email= ?");
@@ -54,6 +43,7 @@ if(!empty($_POST)){
 
 		$accountInfos = $response->fetch(PDO::FETCH_ASSOC); //forcer le tableau associatif
 
+//comparaison des données en base avec celle du formulaire
 		if (!empty($accountInfos)) {
 			var_dump($accountInfos['password']);
 

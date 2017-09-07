@@ -1,5 +1,5 @@
 <?php
-include('connexion.inc.php');
+include('include/connexion.inc.php');
 
 $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -49,7 +49,7 @@ $response1->closeCursor();
 			<div class="row">
 				<div class="col-md-12">
 					<?php 
-					require('menu.inc.php');
+					require('include/menu.inc.php');
 					?>
 				</div>
 			</div>

@@ -7,42 +7,14 @@ if (!empty($_POST)) {
 	$password = $_POST['password'];
 	$email =$_POST['email'];
 	
-	//teste si le pseud est valide et rempli
+	//teste si le pseudo est valide et rempli
 	if(isset($pseudo) && !empty($pseudo)){
 
-<<<<<<< HEAD
+
 
 //protection contre injection sur le pseudo
 		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
-=======
-		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
 
-			include('connexion.inc.php');
-
-			$errors[]= 'Ceci n\'est pas un email valide';
-
-			$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
-
-			$response->execute(
-				array($pseudo)
-				);
-
-			if($response->rowCount == 0) {
-
-				$success = true;
-				
-			}else{
-
-				$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
-
-			}
-
-			$response->closeCursor();
->>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
-
-			
 			$errors[]= 'Ceci n\'est pas un pseudo valide';
 
 		}
@@ -124,7 +96,7 @@ if (!empty($_POST)) {
 
 				}
 
-<<<<<<< HEAD
+
 			$response3->closeCursor();
 
 		}
@@ -136,7 +108,7 @@ if (!empty($_POST)) {
 		$hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
 //connexion en base pour l'insertion
-		$response1 = $bdd->prepare('INSERT INTO users (pseudo, email, password) VALUES (:pseudo, :email, :password)');
+		$response1 = $bdd->prepare('INSERT INTO users (pseudo, email, password, type) VALUES (:pseudo, :email, :password, 0)');
 
 		$response1->bindValue(':pseudo',htmlspecialchars(mb_strtolower($pseudo)) );
 		$response1->bindValue(':email',htmlspecialchars($email));
@@ -145,17 +117,13 @@ if (!empty($_POST)) {
 		$response1->execute();
 
 	
-//test qu'une ligne à bien été insérée
+//teste qu'une ligne à bien été insérée
 	if($response1->rowCount() != 0){
         
             $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
 
             $response1->closeCursor();
-=======
-	if($response->rowCount() != 0){
 
-		$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectué.';
->>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
 		$response->closeCursor();
 
@@ -163,13 +131,10 @@ if (!empty($_POST)) {
 
 		$errors[] = 'L\'ajout n\'a pas pu être effectué.';
 
-<<<<<<< HEAD
+
         }
 	}
-=======
-	}
 
->>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
 }
 
@@ -211,18 +176,16 @@ if (!empty($_POST)) {
 				<div class="col-md-offset-2 col-md-8">
 
 					<?php 
-<<<<<<< HEAD
+
 					//affichage des erreurs
 						if(isset($errors)){
-=======
-					if(isset($errors)){
->>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
 						foreach ($errors as $error) {
 
 							echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
+							}
 						}
-<<<<<<< HEAD
+
 //affichage du message de succès
 						if(isset($success)){
 
@@ -231,17 +194,7 @@ if (!empty($_POST)) {
 						}
 					 ?>
 <!-- formulaire d'inscription -->
-=======
-					}
 
-					if(isset($success)){
-
-
-						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
-					}
-					?>
-
->>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 					<form class="form-horizontal" action="" method="POST">
 						<fieldset>
 
