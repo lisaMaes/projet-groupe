@@ -46,7 +46,7 @@ if(!empty($_POST)){
 
 		$accountInfos = $response->fetch(PDO::FETCH_ASSOC); //forcer le tableau associatif
 
-//comparaison des données en base avec celle du formulaire
+		//comparaison des données en base avec celle du formulaire
 		if (!empty($accountInfos)) {
 
 
@@ -57,8 +57,7 @@ if(!empty($_POST)){
 				$_SESSION['type']=filter_var($accountInfos['type'],FILTER_VALIDATE_INT);
 				$_SESSION['token']=strtotime("now");			
 
-
-				$success ='vous êtes bien connectés!<br>' . var_dump($_SESSION);
+				$success ='vous êtes bien connectés!';
 			} else {
 				$errors[]= 'Mot de passe incorrect';
 			}
@@ -108,10 +107,28 @@ if(!empty($_POST)){
 					<?php
 					if (isset($_SESSION['pseudo']))
 					{
-						echo '<div class="alert alert-info" role=alert>Vous êtes déjà connecté</div>';
+						if(isset($success)){
+							echo '<div class="alert alert-success" role="alert">
+							<strong>'.$success.'</strong></div>';
+						}
+						else
+						{
+							echo '<div class="alert alert-info" role=alert>Vous êtes déjà connecté</div>';
+						}
+
 					}
 					else
 					{
+
+					    // Si l'array $errors existe, on extrait toutes les erreurs qu'il contien avec un foreach et on les affiches
+						if(isset($errors)){
+							foreach($errors as $error){
+								echo '<div class="alert alert-danger" role="alert">
+								<strong>'.$error.'</strong></div>';
+							}
+						}
+
+
 						?>
 
 
@@ -163,21 +180,6 @@ if(!empty($_POST)){
 
 	<footer>
 	</footer>
-	<?php
-
-    // Si l'array $errors existe, on extrait toutes les erreurs qu'il contien avec un foreach et on les affiches
-	if(isset($errors)){
-		foreach($errors as $error){
-			echo '<div class="alert alert-danger" role="alert">
-			<strong>'.$error.'</strong></div>';
-		}
-	}
-    // Si $success existe, on l'affiche
-	if(isset($success)){
-		echo '<div class="alert alert-success" role="alert">
-		<strong>'.$success.'</strong></div>';
-	}
-	?>
 
 
 	<!-- jQuery first, then Tether, then Bootstrap JS. -->

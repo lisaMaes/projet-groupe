@@ -40,14 +40,21 @@
 			?>			
 		</ul>
 
-
-		<div class="navbar-right">
-			<ul class="nav navbar-nav">
-				<li>
-					<a href="#">pseudo</a>
-				</li>
-			</ul>
-		</div>
+		
+		<?php
+		if (isset($_SESSION['pseudo']))
+		{
+			?>
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#">pseudo</a>
+					</li>
+				</ul>
+			</div>
+			<?php 
+		}
+		?>
 	</div>
 
 </nav>
