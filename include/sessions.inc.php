@@ -6,7 +6,7 @@ function CheckSessionExpire()
 		// test le délais de connexion, si > 60min, déconnecte automatiquement
 
 		//echo (strtotime("now")-$_SESSION['USER']['token']). "***<br>";
-		if((strtotime("now")-$_SESSION['USER']['token'])>60)
+		if((strtotime("now")-$_SESSION['USER']['token'])>3600)
 		{
 			?>
 			<!DOCTYPE html>
@@ -39,7 +39,7 @@ function CheckSessionExpire()
 							<div class="col-md-offset-2 col-md-8">
 								<br><br>
 
-								<div class="alert alert-danger" role=alert>Votre session à expiré<br><br>Merci de vous <a href="http://localhost/projet-gorupe/formconnexion.php">reconnecter</a></div>
+								<div class="alert alert-danger" role=alert>Votre session à expiré<br><br>Merci de vous <a href="http://localhost/projet-groupe/formconnexion.php">reconnecter</a></div>
 
 							</div>
 						</div>
