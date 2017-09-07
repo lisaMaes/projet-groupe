@@ -189,9 +189,11 @@ if(isset($_FILES['monFichier']) && (isset($_POST))){
 			{
 				$success[]="Le restaurant vient d'être ajouté";
 				$strId = $bdd -> lastInsertId();
+				$requete->closeCursor();
 			}else
 			{
 				$tErreurs[]="erreur à l'enregistrement, contactez l'admin";
+				$requete->closeCursor();
 			}
 
 		}
@@ -211,11 +213,16 @@ if(isset($_FILES['monFichier']) && (isset($_POST))){
 			if ($requete->rowCount()>0)
 			{
 				$success[]="Le restaurant a été modifié";
+				$requete->closeCursor();
 			}
 			else
 			{
 				$tErreurs[]="erreur à la modification, contactez l'admin";
+
+				$requete->closeCursor();
 			}
+
+			
 		}
 	}
 }
@@ -243,6 +250,8 @@ if ($strId>0 && $strId<=9999999999)
 	$strVille=$resultat['city'];
 	$strTelephone=$resultat['telephone'];
 	$image=$resultat['image'];
+
+	$requete->closeCursor();
 }
 else
 {
@@ -252,6 +261,8 @@ else
 	$strVille="";
 	$strTelephone="";
 	$image="";
+
+	$requete->closeCursor();
 }
 
 
