@@ -52,8 +52,8 @@ if(!empty($_POST)){
 
 			if(password_verify($_POST['password'], $accountInfos['password'])){
 
+				$_SESSION['id']=filter_var($accountInfos['ID'],FILTER_VALIDATE_INT);
 				$_SESSION['pseudo']=htmlspecialchars($accountInfos['pseudo']);
-				$_SESSION['pass']=$accountInfos['password'];
 				$_SESSION['type']=filter_var($accountInfos['type'],FILTER_VALIDATE_INT);
 				$_SESSION['token']=strtotime("now");			
 

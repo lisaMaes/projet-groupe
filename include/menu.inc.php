@@ -48,7 +48,10 @@
 			<div class="navbar-right">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="#">pseudo</a>
+						<a href="users.php?ID=<?php echo $_SESSION['ID']; ?>" title="voir mon profil" alt="voir mon profil"><img src="images/utilisateur.jpg" width=16 height=16><?php echo $_SESSION['pseudo']; ?></a>
+					</li>
+					<li>
+						<a href="deconnexion.php" title="déconnexion" alt="déconnexion"><img src="images/deconnecter.gif" width=16 height=16></a>
 					</li>
 				</ul>
 			</div>
