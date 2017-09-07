@@ -48,6 +48,12 @@ if ($strId>0 && $strId<=9999999999)
 
 }
 
+//Verifie que la personne soit connectée
+	if(!isset($_SESSION['USER'])){
+
+		$errors1[] = 'Veuillez vous connecter pour laisser un commentaire';
+
+	}
 //verification de l'envoi du formulaire commentaire
 if(!empty($_POST)){
 
@@ -62,12 +68,7 @@ if(!empty($_POST)){
 
 	}
 
-//Verifie que la personne soit connectée
-	if(!isset($_SESSION)){
 
-		$errors1[] = 'Veuillez vous connecter pour laisser un commentaire';
-
-	}
 
 if(empty($errors1)){
 
@@ -151,75 +152,78 @@ if(empty($errors1)){
 
 					<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?>
 						
-						<div class="row">
-					<div class="col-md-offset-3 col-md-6">
-						<?php 
-						//affichage des erreurs  pour les commentaires
-							if(isset($errors1)){
-
-								foreach ($errors1 as $error) {
-
-								echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
-								}
-							}
-
-						//affichage du message de succès
-						if(isset($success)){
-
-
-							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
-						}
-						 ?>
-<!-- formulaire de commentaire -->
-						<?php 
-							if(isset($_SESSION)){
-						 ?>
-						<form class="form-horizontal" action="" method="POST">
-							<fieldset>
-
-							<!-- Form Name -->
-								<legend>Donnez votre avis</legend>
-
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="ID"></label>  
-									<div class="col-md-4">
-										<input id="ID" name="ID" placeholder="" class="form-control input-md" type="hidden" value=" <?php echo filter_var($_GET['ID'], FILTER_VALIDATE_INT); ?> ">
-
-									</div>
-								</div>
-
-								<!-- Textarea -->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="comment">Commentaires</label>
-									<div class="col-md-4">                     
-										<textarea class="form-control" id="comment" name="comment">default text</textarea>
-									</div>
-								</div>
-
-								<!-- Button -->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="button"></label>
-									<div class="col-md-4">
-										<button id="button" name="button" class="btn btn-info">Valider</button>
-									</div>
-								</div>
-
-							</fieldset>
-						</form>
-					<?php } ?>
-					</div>
-			
-				</div>
 
 
 					</div>
 
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<h3>Contacts</h3>
 						<?php echo	htmlspecialchars($strTelephone) ?><br><br>
 						<?php echo htmlspecialchars($strAdresse) ?><br>	
 						<?php echo htmlspecialchars($strCP).' '. htmlspecialchars($strVille)?>
+
+						<br><br><a href="index.php" class="btn btn-info">Retour</a>
+						<br><br>
+			<!-- formulaire -->
+						<div class="col-md-12">
+							<?php 
+							//affichage des erreurs  pour les commentaires
+								if(isset($errors1)){
+
+									foreach ($errors1 as $error) {
+
+									echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
+									}
+								}
+
+							//affichage du message de succès
+							if(isset($success)){
+
+
+								echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+							}
+							 ?>
+	<!-- formulaire de commentaire -->
+							<?php 
+								if(isset($_SESSION['USER'])){
+							 ?>
+								<form class="form-horizontal" action="" method="POST">
+									<fieldset>
+
+									<!-- Form Name -->
+										<legend>Donnez votre avis</legend>
+
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="ID"></label>  
+											<div class="col-md-4">
+												<input id="ID" name="ID" placeholder="" class="form-control input-md" type="hidden" value=" <?php echo filter_var($_GET['ID'], FILTER_VALIDATE_INT); ?> ">
+
+											</div>
+										</div>
+
+										<!-- Textarea -->
+										<div class="form-group">
+										
+											<div class="col-md-12">                     
+												<textarea class="form-control" id="comment" name="comment">default text</textarea>
+											</div>
+										</div>
+
+										<!-- Button -->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="button"></label>
+											<div class="col-md-4">
+												<button id="button" name="button" class="btn btn-info">Valider</button>
+											</div>
+										</div>
+
+									</fieldset>
+								</form>
+							<?php }
+							 ?>
+							
+						</div>
 				
 					</div>
 
