@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+require_once('include/sessions.inc.php');
+CheckSessionExpire();
+
 //recupère l'id
 if (isset($_POST['ID']))
 {
@@ -27,16 +30,16 @@ if ($strId>0 && $strId<=9999999999)
 
 	if($requete->rowCount() > 0){
 
-	$strLibelle=$resultat['name'];
-	$strAdresse=$resultat['adress'];
-	$strCP=$resultat['zipcode'];
-	$strVille=$resultat['city'];
-	$strTelephone=$resultat['telephone'];
-	$image=$resultat['image'];
+		$strLibelle=$resultat['name'];
+		$strAdresse=$resultat['adress'];
+		$strCP=$resultat['zipcode'];
+		$strVille=$resultat['city'];
+		$strTelephone=$resultat['telephone'];
+		$image=$resultat['image'];
 
-	$requete->closeCursor();
+		$requete->closeCursor();
 
-}else{
+	}else{
 
 		$errors = "Ce restaurant n'existe pas";
 
@@ -49,11 +52,11 @@ if ($strId>0 && $strId<=9999999999)
 }
 
 //Verifie que la personne soit connectée
-	if(!isset($_SESSION['USER'])){
+if(!isset($_SESSION['USER'])){
 
-		$errors1[] = 'Veuillez vous connecter pour laisser un commentaire';
+	$errors1[] = 'Veuillez vous connecter pour laisser un commentaire';
 
-	}
+}
 //verification de l'envoi du formulaire commentaire
 if(!empty($_POST)){
 
@@ -70,32 +73,32 @@ if(!empty($_POST)){
 
 
 
-if(empty($errors1)){
+	if(empty($errors1)){
 
 	//connexion en base pour l'insertion
 
-	$requete1 = $bdd->prepare('INSERT INTO comments (ID_restaurant, ID_users, comments) VALUES (:ID_restaurant, :ID_users, :comments)');
-	$requete1->bindValue(':ID_restaurant', $ID_restau);
-	$requete1->bindValue(':ID_users', $ID_user);
-	$requete1->bindValue(':comments', $comment);
+		$requete1 = $bdd->prepare('INSERT INTO comments (ID_restaurant, ID_users, comments) VALUES (:ID_restaurant, :ID_users, :comments)');
+		$requete1->bindValue(':ID_restaurant', $ID_restau);
+		$requete1->bindValue(':ID_users', $ID_user);
+		$requete1->bindValue(':comments', $comment);
 
-	$requete1->execute();
+		$requete1->execute();
 
 	//Teste si une ligne a bien été insérée
 
-	if($requete1->rowCount() !=0){
+		if($requete1->rowCount() !=0){
 
-		$success1 = 'Merci pour votre commentaire';
+			$success1 = 'Merci pour votre commentaire';
 
-		$requete1->closeCursor();
-	
-	}else{
+			$requete1->closeCursor();
+			
+		}else{
 
-		$errors1[] = 'L\'ajout a échoué veuillez réessayer plus tard';
+			$errors1[] = 'L\'ajout a échoué veuillez réessayer plus tard';
+
+		}
 
 	}
-
-}
 
 }
 ?>
@@ -120,7 +123,7 @@ if(empty($errors1)){
 		<h1>
 			Eat-eee !! <?php 
 			if(!isset($errors)){
-			echo htmlspecialchars($strLibelle); 
+				echo htmlspecialchars($strLibelle); 
 			}?>
 		</h1>
 	</header> 
@@ -138,116 +141,116 @@ if(empty($errors1)){
 			<div class="row">
 				<div class="col-md-12">
 					
-						<?php
+					<?php
 						//traitement d'affichage 
-						if(isset($errors)){
+					if(isset($errors)){
 
-							echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
+						echo '<div class="alert alert-danger" role=alert>'.htmlspecialchars($errors).'</div>';
 
-						}else{
- 
-					?>
-
-					<h2><?php echo htmlspecialchars($strLibelle); ?></h2>
-
-					<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?>
+					}else{
 						
+						?>
+
+						<h2><?php echo htmlspecialchars($strLibelle); ?></h2>
+
+						<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?>
+							
 
 
-					</div>
+						</div>
 
-					<div class="col-md-4">
-						<h3>Contacts</h3>
-						<?php echo	htmlspecialchars($strTelephone) ?><br><br>
-						<?php echo htmlspecialchars($strAdresse) ?><br>	
-						<?php echo htmlspecialchars($strCP).' '. htmlspecialchars($strVille)?>
+						<div class="col-md-4">
+							<h3>Contacts</h3>
+							<?php echo	htmlspecialchars($strTelephone) ?><br><br>
+							<?php echo htmlspecialchars($strAdresse) ?><br>	
+							<?php echo htmlspecialchars($strCP).' '. htmlspecialchars($strVille)?>
 
-						<br><br><a href="index.php" class="btn btn-info">Retour</a>
-						<br><br>
-			<!-- formulaire -->
-						<div class="col-md-12">
-							<?php 
+							<br><br><a href="index.php" class="btn btn-info">Retour</a>
+							<br><br>
+							<!-- formulaire -->
+							<div class="col-md-12">
+								<?php 
 							//affichage des erreurs  pour les commentaires
 								if(isset($errors1)){
 
 									foreach ($errors1 as $error) {
 
-									echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
+										echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
 									}
 								}
 
 							//affichage du message de succès
-							if(isset($success1)){
+								if(isset($success1)){
 
 
-								echo '<div class="alert alert-info" role=alert>'.$success1.'</div>';
-							}
-							 ?>
-	<!-- formulaire de commentaire -->
-							<?php 
+									echo '<div class="alert alert-info" role=alert>'.$success1.'</div>';
+								}
+								?>
+								<!-- formulaire de commentaire -->
+								<?php 
 								if(isset($_SESSION['USER'])){
-							 ?>
-								<form class="form-horizontal" action="" method="POST">
-									<fieldset>
+									?>
+									<form class="form-horizontal" action="" method="POST">
+										<fieldset>
 
-									<!-- Form Name -->
-										<legend>Donnez votre avis</legend>
+											<!-- Form Name -->
+											<legend>Donnez votre avis</legend>
 
-										<!-- Text input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="ID"></label>  
-											<div class="col-md-4">
-												<input id="ID" name="ID" placeholder="" class="form-control input-md" type="hidden" value=" <?php echo filter_var($_GET['ID'], FILTER_VALIDATE_INT); ?> ">
+											<!-- Text input-->
+											<div class="form-group">
+												<label class="col-md-4 control-label" for="ID"></label>  
+												<div class="col-md-4">
+													<input id="ID" name="ID" placeholder="" class="form-control input-md" type="hidden" value=" <?php echo filter_var($_GET['ID'], FILTER_VALIDATE_INT); ?> ">
 
+												</div>
 											</div>
-										</div>
 
-										<!-- Textarea -->
-										<div class="form-group">
-										
-											<div class="col-md-12">                     
-												<textarea class="form-control" id="comment" name="comment"></textarea>
+											<!-- Textarea -->
+											<div class="form-group">
+												
+												<div class="col-md-12">                     
+													<textarea class="form-control" id="comment" name="comment"></textarea>
+												</div>
 											</div>
-										</div>
 
-										<!-- Button -->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="button"></label>
-											<div class="col-md-4">
-												<button id="button" name="button" class="btn btn-info">Valider</button>
+											<!-- Button -->
+											<div class="form-group">
+												<label class="col-md-4 control-label" for="button"></label>
+												<div class="col-md-4">
+													<button id="button" name="button" class="btn btn-info">Valider</button>
+												</div>
 											</div>
-										</div>
 
-									</fieldset>
-								</form>
-							<?php }
-							 ?>
-							
-						</div>
-				
-					</div>
+										</fieldset>
+									</form>
+									<?php }
+									?>
+									
+								</div>
+								
+							</div>
 
-					<?php
+							<?php
 
 						}
-					 ?>
+						?>
+						
+
+					</div>
 					
-
 				</div>
-				
 			</div>
-		</div>
-	</main>
+		</main>
 
-	<footer>
-	</footer>
-
+		<footer>
+		</footer>
 
 
-	<!-- jQuery first, then Tether, then Bootstrap JS. -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-	<script src="../scripts/jquery.dataTables.min.js"></script>
 
-</body>
-</html>
+		<!-- jQuery first, then Tether, then Bootstrap JS. -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="../scripts/jquery.dataTables.min.js"></script>
+
+	</body>
+	</html>
