@@ -34,7 +34,7 @@ $response1->closeCursor();
 
 	<header>
 		<h1>
-			Eat-eee !! -Inscriptions
+			Eat-eee !!
 		</h1>
 	</header> 
 
