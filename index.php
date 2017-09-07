@@ -1,22 +1,16 @@
 <?php
+session_start();
+
 include('include/connexion.inc.php');
 
-$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $response = $bdd->query('SELECT * FROM restaurants ORDER BY name');
-
 $data = $response->fetchAll(PDO::FETCH_ASSOC);
-
 $response->closeCursor();
 
 
-
-$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 $response1 = $bdd->query('SELECT * FROM restaurants ORDER BY RAND() LIMIT 6');
-
 $data1 = $response1->fetchAll(PDO::FETCH_ASSOC);
-
 $response1->closeCursor();
 
 
@@ -58,21 +52,21 @@ $response1->closeCursor();
 				<div class="col-md-8">
 					
 					<?php 
-						if(!empty($data1))
+					if(!empty($data1))
 
-							foreach ($data1 as $value) {
-								
-								echo'<div class="col-md-2 restaurant">'.htmlspecialchars($value['name']).'</div>';
+						foreach ($data1 as $value) {
+							
+							echo'<div class="col-md-2 restaurant">'.htmlspecialchars($value['name']).'</div>';
 
-							}
+						}
 
-					 ?>
-										
+						?>
+						
 
-				</div>
+					</div>
 
-				<div class="col-md-2">
-					<?php  
+					<div class="col-md-2">
+						<?php  
 						if (!empty($data)) {
 
 							echo '<ul>'; 
@@ -80,31 +74,31 @@ $response1->closeCursor();
 							foreach ($data as $value) {
 
 								echo "<li>".htmlspecialchars($value['name']) ."</li>";
-								}
+							}
 
 							echo'</ul>';
 
-							}
-							
+						}
+						
 						?>
 
+					</div>
 				</div>
+
+
+
+
 			</div>
+		</main>
+
+		<footer>
+		</footer>
 
 
 
+		<!-- jQuery first, then Tether, then Bootstrap JS. -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
-		</div>
-	</main>
-
-	<footer>
-	</footer>
-
-
-
-	<!-- jQuery first, then Tether, then Bootstrap JS. -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+	</body>
+	</html>

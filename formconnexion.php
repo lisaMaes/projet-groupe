@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 
 
 //verifie que le formulaire soit rempli
@@ -33,7 +36,7 @@ if(!empty($_POST)){
 		//connexion a la base de données
 		include('include/connexion.inc.php');
 		
-		$response = $bdd->prepare("SELECT password FROM users WHERE email= ?");
+		$response = $bdd->prepare("SELECT * FROM users WHERE email= ?");
 
 		$response->execute(
 			array(
@@ -48,7 +51,14 @@ if(!empty($_POST)){
 
 
 			if(password_verify($_POST['password'], $accountInfos['password'])){
-				$success ='vous êtes bien connectés!';
+
+				$_SESSION['pseudo']=htmlspecialchars($accountInfos['pseudo']);
+				$_SESSION['pass']=$accountInfos['password'];
+				$_SESSION['type']=filter_var($accountInfos['type'],FILTER_VALIDATE_INT);
+				$_SESSION['token']=strtotime("now");			
+
+
+				$success ='vous êtes bien connectés!<br>' . var_dump($_SESSION);
 			} else {
 				$errors[]= 'Mot de passe incorrect';
 			}
@@ -95,38 +105,53 @@ if(!empty($_POST)){
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 
-					<form action="" method="POST" class="form-horizontal">
-						<fieldset>
+					<?php
+					if (isset($_SESSION['pseudo']))
+					{
+						echo '<div class="alert alert-info" role=alert>Vous êtes déjà connecté</div>';
+					}
+					else
+					{
+						?>
 
-							<!-- Form Name -->
-							<legend>Identifiez-vous!</legend>
 
-							<!-- Text input-->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="email">Email</label>  
-								<div class="col-md-4">
-									<input id="email" name="email" type="text" placeholder="Email" class="form-control input-md" required="">
+
+						<form action="" method="POST" class="form-horizontal">
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Identifiez-vous!</legend>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="email">Email</label>  
+									<div class="col-md-4">
+										<input id="email" name="email" type="text" placeholder="Email" class="form-control input-md" required="">
+									</div>
 								</div>
-							</div>
 
-							<!-- Password input-->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="password">Password</label>
-								<div class="col-md-4">
-									<input id="password" name="password" type="text" placeholder="Password" class="form-control input-md" required="">
+								<!-- Password input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="password">Password</label>
+									<div class="col-md-4">
+										<input id="password" name="password" type="text" placeholder="Password" class="form-control input-md" required="">
+									</div>
 								</div>
-							</div>
 
-							<!-- Button -->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="singlebutton"></label>
-								<div class="col-md-4">
-									<button id="singlebutton" name="singlebutton" class="btn btn-primary">Envoyer</button>
+								<!-- Button -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="singlebutton"></label>
+									<div class="col-md-4">
+										<button id="singlebutton" name="singlebutton" class="btn btn-primary">Envoyer</button>
+									</div>
 								</div>
-							</div>
 
-						</fieldset>
-					</form>
+							</fieldset>
+						</form>
+
+						<?php 
+					}
+					?>
 
 
 				</div>

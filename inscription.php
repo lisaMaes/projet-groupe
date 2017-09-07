@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //test si le formulaire a été envoyé
 if (!empty($_POST)) {
 
@@ -62,44 +64,44 @@ if (!empty($_POST)) {
 // Si le proccessus est valide jusque là 
 	if(empty($errors)){
 
-			require('include/connexion.inc.php');
+		require('include/connexion.inc.php');
 
 //connexion base pour doublon pseudo
-			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
+		$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
 
-			$response->execute(
-				array($pseudo)
-				);
+		$response->execute(
+			array($pseudo)
+			);
 //verifie qu'il n'y ait pas de doublon pseudo
-				if($response->rowCount() > 0) {
+		if($response->rowCount() > 0) {
 
 
-					$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
+			$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
 
-				}
+		}
 
-			$response->closeCursor();
+		$response->closeCursor();
 
 //connexion base doublon email
-			$response3 = $bdd->prepare('SELECT pseudo FROM users WHERE email = ?');
+		$response3 = $bdd->prepare('SELECT pseudo FROM users WHERE email = ?');
 
-			$response3->execute(
-				array($email)
-				);
+		$response3->execute(
+			array($email)
+			);
 
 
 //verifie qu'il n'y ait pas de doublon d'email
-				if($response3->rowCount() > 0) {
+		if($response3->rowCount() > 0) {
 
 
-					$errors[] = 'Cette addresse possède déjà un compte chez nous. Veuillez en rentrer une autre';
-
-				}
-
-
-			$response3->closeCursor();
+			$errors[] = 'Cette addresse possède déjà un compte chez nous. Veuillez en rentrer une autre';
 
 		}
+
+
+		$response3->closeCursor();
+
+	}
 
 
 	if(empty($errors)){
@@ -116,23 +118,23 @@ if (!empty($_POST)) {
 
 		$response1->execute();
 
-	
+
 //teste qu'une ligne à bien été insérée
-	if($response1->rowCount() != 0){
-        
-            $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
+		if($response1->rowCount() != 0){
 
-            $response1->closeCursor();
+			$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
 
-
-		$response->closeCursor();
-
-	}else{
-
-		$errors[] = 'L\'ajout n\'a pas pu être effectué.';
+			$response1->closeCursor();
 
 
-        }
+			$response->closeCursor();
+
+		}else{
+
+			$errors[] = 'L\'ajout n\'a pas pu être effectué.';
+
+
+		}
 	}
 
 
@@ -174,15 +176,21 @@ if (!empty($_POST)) {
 
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
+					<?php
+					if (isset($_SESSION['pseudo']))
+					{
+						echo '<div class="alert alert-info" role=alert>Vous êtes déjà connecté</div>';
+					}
+					else
+					{
 
-					<?php 
 
 					//affichage des erreurs
 						if(isset($errors)){
 
-						foreach ($errors as $error) {
+							foreach ($errors as $error) {
 
-							echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
+								echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
 							}
 						}
 
@@ -192,53 +200,55 @@ if (!empty($_POST)) {
 
 							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
 						}
-					 ?>
-<!-- formulaire d'inscription -->
+						?>
+						<!-- formulaire d'inscription -->
 
-					<form class="form-horizontal" action="" method="POST">
-						<fieldset>
+						<form class="form-horizontal" action="" method="POST">
+							<fieldset>
 
-							<!-- Form Name -->
-							<legend>Rejoignez-nous</legend>
+								<!-- Form Name -->
+								<legend>Rejoignez-nous</legend>
 
-							<!-- Text input-->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
-								<div class="col-md-4">
-									<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
+									<div class="col-md-4">
+										<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
 
+									</div>
 								</div>
-							</div>
 
-							<!-- Text input-->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="email">Email</label>  
-								<div class="col-md-4">
-									<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="email">Email</label>  
+									<div class="col-md-4">
+										<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
 
+									</div>
 								</div>
-							</div>
 
-							<!-- Text input-->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="password">Mot de passe</label>  
-								<div class="col-md-4">
-									<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="password">Mot de passe</label>  
+									<div class="col-md-4">
+										<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
 
+									</div>
 								</div>
-							</div>
 
-							<!-- Button -->
-							<div class="form-group">
-								<label class="col-md-4 control-label" for="button"></label>
-								<div class="col-md-4">
-									<button id="button" name="button" class="btn btn-info">Valider</button>
+								<!-- Button -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="button"></label>
+									<div class="col-md-4">
+										<button id="button" name="button" class="btn btn-info">Valider</button>
+									</div>
 								</div>
-							</div>
 
-						</fieldset>
-					</form>
-
+							</fieldset>
+						</form>
+						<?php 
+					}
+					?>
 
 				</div>
 			</div>
