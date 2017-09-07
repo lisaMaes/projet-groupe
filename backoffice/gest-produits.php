@@ -93,36 +93,36 @@ if(isset($_FILES['monFichier']) && (isset($_POST))){
   switch ($_FILES['monFichier']['error']) {
 
     case 1:
-      $error[]='La taille de fichier est supérieur à celle acceptée';
+      $tErreurs[]='La taille de fichier est supérieur à celle acceptée';
       break;
 
     case 2:
-      $error[]='La taille de fichier est supérieur à celle acceptée';
+      $tErreurs[]='La taille de fichier est supérieur à celle acceptée';
       break;
 
     case 3:
-      $error[]='Le téléchargement est incomplet. Veuillez réessayer';
+      $tErreurs[]='Le téléchargement est incomplet. Veuillez réessayer';
       break;
 
     case 4:
-      $error[]='Veuillez selectionner un fichier';
+      $tErreurs[]='Veuillez selectionner un fichier';
       break; 
 
     case 6:
-      $error[]='Erreur serveur code 90001 : Le téléchargement n\'a pus ce faire. Veuillez réessayer plus tard';
+      $tErreurs[]='Erreur serveur code 90001 : Le téléchargement n\'a pus ce faire. Veuillez réessayer plus tard';
       break;
       //90001 doit etre inscrit chez nous afin de pouvoir identifier l'erreur facilement 
 
     case 7:
-      $error[]='Le téléchargement n\'a pu ce faire. Veuillez réessayer plus tard';
+      $tErreurs[]='Le téléchargement n\'a pu ce faire. Veuillez réessayer plus tard';
       break;
 
     case 8:
-      $error[]='Le téléchargement était interrompu';
+      $tErreurs[]='Le téléchargement était interrompu';
       break;
 
     case !0://comme on a sauté des erreurs il faut verifier qu'il n'y en ai pas d'autres
-        $error[]= 'Erreur inconnue.';
+        $tErreurs[]= 'Erreur inconnue.';
 
     default://si aucune erreur a été envoyer
       
@@ -136,9 +136,9 @@ if(isset($_FILES['monFichier']) && (isset($_POST))){
 
                        
     //recupération, deplacement et chgt du nom du fichier
-                    if(!isset($error)){
+                    if(!isset($tErreurs)){
 
-                       require('include/fileNameGenerator');
+                       require('../include/fileNameGenerator.php');
                         $newFileName = createFileName(10);
 
                         if($extension == 'image/jpeg'){
@@ -151,24 +151,24 @@ if(isset($_FILES['monFichier']) && (isset($_POST))){
                         $finalFileName = $newFileName .$newFileExt;
                     }
 
-                    move_uploaded_file($_FILES['monFichier']['tmp_name'], 'img_restau/'.$finalFileName);
+                    move_uploaded_file($_FILES['monFichier']['tmp_name'], '../img_restau/'.$finalFileName);
 
 
 
                       }else{
 
-                $error[] = 'Le format d\'image n\'est pas valide';
+                $tErreurs[] = 'Le format d\'image n\'est pas valide';
 
                           }
         }else{
 
-            $error[] = 'Veuillez choisir un fichier inférieur à 500Ko !';
+            $tErreurs[] = 'Veuillez choisir un fichier inférieur à 500Ko !';
         }
 
       break;
   }
 
-	}
+	
 }
 
 //si il  n'y a pas d'erreurs
@@ -242,6 +242,7 @@ if ($strId>0 && $strId<=9999999999)
 	$strCP=$resultat['zipcode'];
 	$strVille=$resultat['city'];
 	$strTelephone=$resultat['telephone'];
+	$image=$resultat['image'];
 }
 else
 {
@@ -250,6 +251,7 @@ else
 	$strCP="";
 	$strVille="";
 	$strTelephone="";
+	$image="";
 }
 
 
@@ -305,6 +307,7 @@ else
 						echo '<div class="alert alert-info" role=alert>'.$value.'</div>';
 						}
 					}
+
 					?>
 <!-- Formulaire de modification et création -->
 					<form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
@@ -337,6 +340,16 @@ else
 							<div class="form-group">
 								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
         						<input type="file" name="monFichier">
+
+							</div>
+							<div>
+								
+								<?php if(!empty($image)){
+
+										echo '<img src="../img_restau/'.$image.'"><br><br>';
+
+									} 
+									?>
 
 							</div>
 
