@@ -11,7 +11,7 @@
 
 			<?php 
 			//affiche si la session n'existe pas les page de connexion/inscription
-			if (!isset($_SESSION['pseudo']))
+			if (!isset($_SESSION['USER']['pseudo']))
 			{
 				?>
 				<li>
@@ -28,7 +28,7 @@
 
 			<?php
 			// affiche l'accès à l'admin si l'utilisateur est de type admin
-			if (isset($_SESSION['type']) && $_SESSION['type']==1)
+			if (isset($_SESSION['USER']['type']) && $_SESSION['USER']['type']==1)
 			{
 				?>		
 				<li>
@@ -42,13 +42,13 @@
 
 		
 		<?php
-		if (isset($_SESSION['pseudo']))
+		if (isset($_SESSION['USER']['pseudo']))
 		{
 			?>
 			<div class="navbar-right">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="users.php?ID=<?php echo $_SESSION['ID']; ?>" title="voir mon profil" alt="voir mon profil"><img src="images/utilisateur.jpg" width=16 height=16><?php echo $_SESSION['pseudo']; ?></a>
+						<a href="users.php?ID=<?php echo $_SESSION['USER']['ID']; ?>" title="voir mon profil" alt="voir mon profil"><img src="images/utilisateur.jpg" width=16 height=16><?php echo $_SESSION['USER']['pseudo']; ?></a>
 					</li>
 					<li>
 						<a href="deconnexion.php" title="déconnexion" alt="déconnexion"><img src="images/deconnecter.gif" width=16 height=16></a>

@@ -177,7 +177,7 @@ if (!empty($_POST)) {
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 					<?php
-					if (isset($_SESSION['pseudo']))
+					if (isset($_SESSION['USER']['pseudo']))
 					{
 						echo '<div class="alert alert-info" role=alert>Vous êtes déjà connecté</div>';
 					}

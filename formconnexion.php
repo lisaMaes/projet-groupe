@@ -52,10 +52,10 @@ if(!empty($_POST)){
 
 			if(password_verify($_POST['password'], $accountInfos['password'])){
 
-				$_SESSION['id']=filter_var($accountInfos['ID'],FILTER_VALIDATE_INT);
-				$_SESSION['pseudo']=htmlspecialchars($accountInfos['pseudo']);
-				$_SESSION['type']=filter_var($accountInfos['type'],FILTER_VALIDATE_INT);
-				$_SESSION['token']=strtotime("now");			
+				$_SESSION['USER']['ID']=filter_var($accountInfos['ID'],FILTER_VALIDATE_INT);
+				$_SESSION['USER']['pseudo']=htmlspecialchars($accountInfos['pseudo']);
+				$_SESSION['USER']['type']=filter_var($accountInfos['type'],FILTER_VALIDATE_INT);
+				$_SESSION['USER']['token']=strtotime("now");			
 
 				$success ='vous êtes bien connectés!';
 			} else {
@@ -105,7 +105,7 @@ if(!empty($_POST)){
 				<div class="col-md-offset-2 col-md-8">
 
 					<?php
-					if (isset($_SESSION['pseudo']))
+					if (isset($_SESSION['USER']['pseudo']))
 					{
 						if(isset($success)){
 							echo '<div class="alert alert-success" role="alert">
