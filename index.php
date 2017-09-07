@@ -73,7 +73,7 @@ $response1->closeCursor();
 
 							foreach ($data as $value) {
 
-								echo "<li>".htmlspecialchars($value['name']) ."</li>";
+								echo '<li><a href = "restaurant.php?ID='.htmlspecialchars($value['ID']).'">'.htmlspecialchars($value['name']) .'<a></li>';
 							}
 
 							echo'</ul>';

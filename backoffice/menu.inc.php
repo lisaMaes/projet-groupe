@@ -9,7 +9,7 @@
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 							<ul class="nav navbar-nav">
 								<li>
-									<a href="index.php">Liste produits</a>
+									<a href="index.php">Liste restaurants</a>
 								</li>
 								<li>
 									<a href="liste-users.php">Liste utilisateurs</a>
