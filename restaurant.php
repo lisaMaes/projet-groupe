@@ -74,7 +74,7 @@ if(empty($errors1)){
 
 	//connexion en base pour l'insertion
 
-	$requete1 = $bdd->prepare('INSERT INTO comments (ID_restaurant, ID_users, comments) VALUES (:ID_restaurant, :ID_users, comments)');
+	$requete1 = $bdd->prepare('INSERT INTO comments (ID_restaurant, ID_users, comments) VALUES (:ID_restaurant, :ID_users, :comments)');
 	$requete1->bindValue(':ID_restaurant', $ID_restau);
 	$requete1->bindValue(':ID_users', $ID_user);
 	$requete1->bindValue(':comments', $comment);
@@ -177,10 +177,10 @@ if(empty($errors1)){
 								}
 
 							//affichage du message de succès
-							if(isset($success)){
+							if(isset($success1)){
 
 
-								echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+								echo '<div class="alert alert-info" role=alert>'.$success1.'</div>';
 							}
 							 ?>
 	<!-- formulaire de commentaire -->
@@ -206,7 +206,7 @@ if(empty($errors1)){
 										<div class="form-group">
 										
 											<div class="col-md-12">                     
-												<textarea class="form-control" id="comment" name="comment">default text</textarea>
+												<textarea class="form-control" id="comment" name="comment"></textarea>
 											</div>
 										</div>
 
