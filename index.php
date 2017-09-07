@@ -49,14 +49,14 @@ $response1->closeCursor();
 			</div>
 
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-10">
 					
 					<?php 
 					if(!empty($data1))
 
 						foreach ($data1 as $value) {
 							
-							echo'<div class="col-md-2 restaurant">'.htmlspecialchars($value['name']).'</div>';
+							echo'<div class="col-md-5 restaurant"><h2>'.htmlspecialchars($value['name']).'</h2><a href= "restaurant.php?ID='.htmlspecialchars($value['ID']).'"><img src= "img_restau/'.htmlspecialchars($value['image']).'" style ="width : 100%;"></a></div>';
 
 						}
 
