@@ -1,5 +1,23 @@
 <?php
 
+if (isset($_POST['ID']) AND !empty($_POST['ID']) )
+{
+
+	if (filter_var($_POST['ID'],FILTER_VALIDATE_INT))
+	{
+		require_once('../connexion.inc.php');
+		$requete=$bdd->prepare('DELETE FROM restaurants WHERE ID=?');
+		$requete->execute(array($_POST['ID']));
+
+		$success="Suppression effectuée";
+	}
+	else
+	{
+		$errors="Erreur lors de la suppression";		
+	}
+}
+
+
 
 
 ?>
@@ -39,6 +57,22 @@
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 
+					<?php 
+					if(isset($errors)){
+						echo '<div class="alert alert-danger" role=alert>'.$errors.'</div>';
+					}
+
+					if(isset($success)){
+
+
+						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+					}
+					?>
+
+
+
+
+
 					<div id="cmdUI">
 						<input type="button" value="Nouveau" onclick="ajouter();" class='btn btn-success'>
 
@@ -46,7 +80,7 @@
 					<br>
 
 					<?php 
-					include('../connexion.inc.php');
+					require_once('../include/connexion.inc.php');
 
 					$requete=$bdd->query('SELECT ID,name,city,zipcode FROM restaurants ORDER BY name');
 					$iTotal=$requete->rowCount();
@@ -88,16 +122,16 @@
 									echo "\n<tr>";
 
 									echo "\n<td>";
-									echo $resultat['name'] . ' (' . $resultat['ID'] . ')';
+									echo htmlspecialchars($resultat['name']) . ' (' . htmlspecialchars($resultat['ID']) . ')';
 									echo "</td>";
 
 									echo "\n<td width='250'>";
-									echo $resultat['city'] . ' (' . $resultat['zipcode'] . ')';				            	
+									echo htmlspecialchars($resultat['city']) . ' (' . htmlspecialchars($resultat['zipcode']) . ')';				            	
 									echo "</td>";
 
 									echo "\n<td width='180'>";
-									echo "<input type='button' value='Modifier' class='btn btn-info' onclick='modifier(". $resultat['ID'] . ");'>&nbsp;&nbsp;";
-									echo "<input type='button' value='Supprimer' class='btn btn-danger' onclick='supprimer(". $resultat['ID'] . ");'>";
+									echo "<input type='button' value='Modifier' class='btn btn-info' onclick='modifier(". htmlspecialchars($resultat['ID']) . ");'>&nbsp;&nbsp;";
+									echo "<input type='button' value='Supprimer' class='btn btn-danger' onclick='supprimer(". htmlspecialchars($resultat['ID']) . ");'>";
 									echo "</td>";            
 
 									echo "\n</tr>";
@@ -115,7 +149,6 @@
 					?>
 
 					<form name="FrmMain" action="" method="post">
-						<input type="hidden" name="COMMANDE">
 						<input type="hidden" name="ID">
 					</form>
 				</div>
@@ -154,6 +187,17 @@
 			document.FrmMain.ID.value=ID;
 			document.FrmMain.action='gest-produits.php';
 			document.FrmMain.submit();
+
+		}
+
+
+		function supprimer(ID){
+			confirm("voulez-vous supprimer cette ligne ?")
+			{
+				document.FrmMain.ID.value=ID;
+				document.FrmMain.action='index.php';
+				document.FrmMain.submit();
+			}
 
 		}
 

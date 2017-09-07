@@ -1,5 +1,41 @@
 <?php
 
+if (isset($_POST['ID']) AND !empty($_POST['ID']) )
+{
+
+	if (filter_var($_POST['ID'],FILTER_VALIDATE_INT))
+	{
+		require_once('../include/connexion.inc.php');
+		
+		$requete=$bdd->prepare('SELECT type FROM users WHERE ID=?');
+		$requete->execute(array($_POST['ID']));
+		$resultat=$requete->fetch(PDO::FETCH_ASSOC);
+
+
+		if ($resultat['type']==0)
+		{
+			$promotion=$bdd->prepare('UPDATE users SET type=1 WHERE ID=?');
+		}
+		else
+		{
+			$promotion=$bdd->prepare('UPDATE users SET type=0 WHERE ID=?');			
+		}
+		$promotion->execute(array($_POST['ID']));	
+
+
+		if ($promotion->rowCount()==1)
+		{
+			$success="L'autorisation utilisateur à été modifiée";
+		}
+
+		else
+		{
+			$errors="Erreur lors de la promotion";		
+		}
+		$promotion->closeCursor();
+		$requete->closeCursor();
+	}
+}
 
 
 ?>
@@ -39,14 +75,21 @@
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 
-					<div id="cmdUI">
-						<input type="button" value="Nouveau" onclick="ajouter();" class='btn btn-success'>
+					<?php 
+					if(isset($errors)){
+						echo '<div class="alert alert-danger" role=alert>'.$errors.'</div>';
+					}
 
-					</div>
+					if(isset($success)){
+
+
+						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+					}
+					?>
 					<br>
 
 					<?php 
-					include('../connexion.inc.php');
+					include('../include/connexion.inc.php');
 
 					$requete=$bdd->query('SELECT * FROM users ORDER BY pseudo');
 					$iTotal=$requete->rowCount();
@@ -60,7 +103,7 @@
 					{
 						?>
 						
-						Liste des restaurants en base :
+						Liste des utilisateurs en base :
 						<br><br>
 
 
@@ -96,8 +139,13 @@
 									echo "</td>";
 
 									echo "\n<td width='180'>";
-									echo "<input type='button' value='Modifier' class='btn btn-info' onclick='modifier(". $resultat['ID'] . ");'>&nbsp;&nbsp;";
-									echo "<input type='button' value='Supprimer' class='btn btn-danger' onclick='supprimer(". $resultat['ID'] . ");'>";
+									
+									$strTemp="-> admin";
+									if ($resultat['type']==1)
+									{
+										$strTemp="-> user";
+									}
+									echo "<input type='button' value='" . $strTemp . "' class='btn btn-info' onclick='changeType(". $resultat['ID'] . ");'>&nbsp;&nbsp;";
 									echo "</td>";            
 
 									echo "\n</tr>";
@@ -115,7 +163,6 @@
 					?>
 
 					<form name="FrmMain" action="" method="post">
-						<input type="hidden" name="COMMANDE">
 						<input type="hidden" name="ID">
 					</form>
 				</div>
@@ -143,13 +190,11 @@
 		});
 
 
-/*		function ajouter(){
-			document.FrmMain.ID.value=0;
-			document.FrmMain.action='gest-cgu.php';
+		function changeType(ID){
+			document.FrmMain.ID.value=ID;
 			document.FrmMain.submit();
-
 		}
-		*/
+		
 
 	</script>
 

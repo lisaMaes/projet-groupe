@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 06 sep. 2017 à 14:20
+-- Généré le :  jeu. 07 sep. 2017 à 09:03
 -- Version du serveur :  10.1.22-MariaDB
 -- Version de PHP :  7.1.4
 
@@ -43,12 +43,21 @@ CREATE TABLE `comments` (
 CREATE TABLE `restaurants` (
   `ID` int(11) NOT NULL,
   `name` varchar(75) NOT NULL,
-  `adress` varchar(50) NOT NULL,
+  `adress` varchar(150) NOT NULL,
   `city` varchar(50) NOT NULL,
   `zipcode` varchar(5) NOT NULL,
-  `telephone` varchar(10) NOT NULL,
-  `email` varchar(250) NOT NULL
+  `telephone` varchar(15) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `image` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `restaurants`
+--
+
+INSERT INTO `restaurants` (`ID`, `name`, `adress`, `city`, `zipcode`, `telephone`, `email`, `image`) VALUES
+(1, 'L\'étoile d\'Asie', '13 rue Cavenne', 'Lyon', '69007', '0478724995', '', ''),
+(2, 'Palais d\'Or', '51 rue Ney', 'Lyon', '69006', '0478245622', '', '');
 
 -- --------------------------------------------------------
 
@@ -60,8 +69,17 @@ CREATE TABLE `users` (
   `ID` int(11) NOT NULL,
   `pseudo` varchar(50) NOT NULL,
   `email` varchar(250) CHARACTER SET latin1 NOT NULL,
-  `password` varchar(60) CHARACTER SET latin1 NOT NULL
+  `password` varchar(60) CHARACTER SET latin1 NOT NULL,
+  `type` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`ID`, `pseudo`, `email`, `password`, `type`) VALUES
+(1, 'lili', 'maestrilisa@yahoo.fr', 'djkjqsdkll', ''),
+(2, 'elise', 'jean@gmail.com', 'fjsjfkj', '');
 
 --
 -- Index pour les tables déchargées
@@ -87,12 +105,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
