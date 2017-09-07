@@ -1,6 +1,6 @@
 <?php
 
-
+//recupère l'id
 if (isset($_POST['ID']))
 {
 	$strId=filter_var($_POST['ID'],FILTER_VALIDATE_INT);
@@ -17,9 +17,10 @@ else
 
 require('../include/connexion.inc.php');
 
-
+//verifie la validité du formulaire et des validité des champs
 if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 {
+
 
 	if (isset($_POST['name'])  && !empty($_POST['name']))
 	{
@@ -86,10 +87,10 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 
 
 
-
+//si il  n'y a pas d'erreurs
 	if (!isset($tErreurs)){
 
-
+//soit INSERT d'un nouvel élément si Id vide
 		if 	($strId==0){
 			$requete=$bdd->prepare('INSERT INTO restaurants (name,adress,city,zipcode,telephone,image) VALUES(:nom,:adresse,:ville,:cp,:tel,:image)');
 			$requete->bindValue(':nom',$strLibelle);
@@ -110,6 +111,7 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 			}
 
 		}
+		//soit mise à jour de la fiche existante
 		else
 		{
 			$requete=$bdd->prepare('UPDATE restaurants SET name=:nom,adress=:adresse,city=:ville,zipcode=:cp,telephone=:tel,image=:image WHERE ID=:id');
@@ -142,7 +144,7 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 
 
 
-
+// Permet d'afficher les infos de la fiche restau si ID existe
 
 if ($strId>0 && $strId<=9999999999)
 {
@@ -204,7 +206,7 @@ else
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 
-					<?php 
+					<?php //Gestion des message d'erreur et de succès
 					if(isset($tErreurs)){
 
 						foreach ($tErreurs as $error) {
@@ -219,7 +221,7 @@ else
 						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
 					}
 					?>
-
+<!-- Formulaire de modification et création -->
 					<form class="form-horizontal" action="" method="POST">
 						<input type="hidden" name="ID" value="<?php echo $strId; ?>">
 						<fieldset>

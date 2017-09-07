@@ -45,7 +45,7 @@ if(!empty($_POST)){
 
 //comparaison des données en base avec celle du formulaire
 		if (!empty($accountInfos)) {
-			var_dump($accountInfos['password']);
+
 
 			if(password_verify($_POST['password'], $accountInfos['password'])){
 				$success ='vous êtes bien connectés!';

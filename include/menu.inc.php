@@ -9,13 +9,10 @@
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<li>
-				<a href="index.php">Accueil</a>
-			</li>
-			<li>
 				<a href="formconnexion.php">Connexion</a>
 			</li>
 			<li>
-				<a href="inscription.php">Inscriptions</a>
+				<a href="inscription.php">Inscription</a>
 			</li>
 		</ul>
 		<!-- <form class="navbar-form navbar-right" role="search">
