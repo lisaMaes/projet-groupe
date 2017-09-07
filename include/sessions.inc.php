@@ -39,7 +39,7 @@ function CheckSessionExpire()
 							<div class="col-md-offset-2 col-md-8">
 								<br><br>
 
-								<div class="alert alert-danger" role=alert>Votre session à expiré<br><br>Merci de vous <a href="http://localhost/projet-groupe/formconnexion.php">reconnecter</a></div>
+								<div class="alert alert-danger" role=alert>Votre session à expiré<br><br>Merci de vous <a href="./formconnexion.php">reconnecter</a></div>
 
 							</div>
 						</div>
@@ -112,7 +112,7 @@ function CheckSessionExpire()
 							<div class="col-md-offset-2 col-md-8">
 								<br><br>
 
-								<div class="alert alert-danger" role=alert>Vous n'avez rien à foutre là !<br><br>Retour à la <a href="http://localhost/projet-groupe">page  d'accueil</a></div>
+								<div class="alert alert-danger" role=alert>Vous n'avez rien à foutre là !<br><br>Retour à la <a href="../index.php">page d'accueil</a></div>
 
 							</div>
 						</div>

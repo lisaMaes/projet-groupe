@@ -224,8 +224,33 @@ if(!empty($_POST)){
 										</fieldset>
 									</form>
 									<?php }
+									
+
+									$requete = $bdd->prepare('SELECT comments,pseudo FROM  comments,users WHERE ID_restaurant=:idResto AND ID_users=:idUser AND comments.ID_users=users.ID');
+									$requete->bindValue(':idResto',filter_var($_GET['ID'], FILTER_VALIDATE_INT));
+									$requete->bindValue(':idUser',filter_var($_SESSION['USER']['ID'], FILTER_VALIDATE_INT));
+									$requete->execute();
+									$restultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+									$requete->closeCursor();
+
+									if (!empty($restultat)) {
+
+										foreach ($restultat as $value) {
+											echo "déposé par " . htmlspecialchars($value['pseudo']) . " :";
+											echo "<br>";											
+											echo htmlspecialchars($value['comments']);
+											echo "<br><hr>";
+										}
+
+
+									}
+
+
 									?>
 									
+
+
+
 								</div>
 								
 							</div>
