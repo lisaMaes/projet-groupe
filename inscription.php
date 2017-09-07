@@ -112,8 +112,8 @@ if (!empty($_POST)) {
 //connexion en base pour l'insertion
 		$response1 = $bdd->prepare('INSERT INTO users (pseudo, email, password, type) VALUES (:pseudo, :email, :password, 0)');
 
-		$response1->bindValue(':pseudo',htmlspecialchars(mb_strtolower($pseudo)) );
-		$response1->bindValue(':email',htmlspecialchars($email));
+		$response1->bindValue(':pseudo',mb_strtolower($pseudo));
+		$response1->bindValue(':email',$email);
 		$response1->bindValue(':password',$hash);
 
 		$response1->execute();
@@ -127,7 +127,7 @@ if (!empty($_POST)) {
 			$response1->closeCursor();
 
 
-			$response->closeCursor();
+			
 
 		}else{
 

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //recupère l'id
 if (isset($_POST['ID']))
 {
@@ -43,6 +45,56 @@ if ($strId>0 && $strId<=9999999999)
 }else{
 
 	$errors = "Il n'y a pas de restaurant a affiché";
+
+}
+
+//verification de l'envoi du formulaire commentaire
+if(!empty($_POST)){
+
+	$comment = $_POST['comment'];
+	$ID_user = $_SESSION['USER']['ID'];
+	$ID_restau = $_POST['ID'];
+
+//verifie qu'il ne soit pas vide
+	if(!isset($comment) || empty($comment)){
+
+		$errors1[]= 'Veuillez remplir le champ commentaires';
+
+	}
+
+//Verifie que la personne soit connectée
+	if(!isset($_SESSION)){
+
+		$errors1[] = 'Veuillez vous connecter pour laisser un commentaire';
+
+	}
+
+if(empty($errors1)){
+
+	//connexion en base pour l'insertion
+
+	$requete1 = $bdd->prepare('INSERT INTO comments (ID_restaurant, ID_users, comments) VALUES (:ID_restaurant, :ID_users, comments)');
+	$requete1->bindValue(':ID_restaurant', $ID_restau);
+	$requete1->bindValue(':ID_users', $ID_user);
+	$requete1->bindValue(':comments', $comment);
+
+	$requete1->execute();
+
+	//Teste si une ligne a bien été insérée
+
+	if($requete1->rowCount() !=0){
+
+		$success1 = 'Merci pour votre commentaire';
+
+		$requete1->closeCursor();
+	
+	}else{
+
+		$errors1[] = 'L\'ajout a échoué veuillez réessayer plus tard';
+
+	}
+
+}
 
 }
 ?>
@@ -97,7 +149,71 @@ if ($strId>0 && $strId<=9999999999)
 
 					<h2><?php echo htmlspecialchars($strLibelle); ?></h2>
 
-					<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?></div>
+					<div class = "col-md-8"><?php echo '<img src ="img_restau/'.htmlspecialchars($image).'" style ="width : 100%;">'; ?>
+						
+						<div class="row">
+					<div class="col-md-offset-3 col-md-6">
+						<?php 
+						//affichage des erreurs  pour les commentaires
+							if(isset($errors1)){
+
+								foreach ($errors1 as $error) {
+
+								echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
+								}
+							}
+
+						//affichage du message de succès
+						if(isset($success)){
+
+
+							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+						}
+						 ?>
+<!-- formulaire de commentaire -->
+						<?php 
+							if(isset($_SESSION)){
+						 ?>
+						<form class="form-horizontal" action="" method="POST">
+							<fieldset>
+
+							<!-- Form Name -->
+								<legend>Donnez votre avis</legend>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="ID"></label>  
+									<div class="col-md-4">
+										<input id="ID" name="ID" placeholder="" class="form-control input-md" type="hidden" value=" <?php echo filter_var($_GET['ID'], FILTER_VALIDATE_INT); ?> ">
+
+									</div>
+								</div>
+
+								<!-- Textarea -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="comment">Commentaires</label>
+									<div class="col-md-4">                     
+										<textarea class="form-control" id="comment" name="comment">default text</textarea>
+									</div>
+								</div>
+
+								<!-- Button -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="button"></label>
+									<div class="col-md-4">
+										<button id="button" name="button" class="btn btn-info">Valider</button>
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+					<?php } ?>
+					</div>
+			
+				</div>
+
+
+					</div>
 
 					<div class="col-md-2">
 						<h3>Contacts</h3>
@@ -114,6 +230,7 @@ if ($strId>0 && $strId<=9999999999)
 					
 
 				</div>
+				
 			</div>
 		</div>
 	</main>
