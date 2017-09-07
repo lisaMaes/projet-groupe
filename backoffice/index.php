@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['type']) OR $_SESSION['type']<>1)
+{
+	header('HTTP/1.0 403 Forbidden');
+}
+
+
+
+
 
 if (isset($_POST['ID']) AND !empty($_POST['ID']) )
 {
