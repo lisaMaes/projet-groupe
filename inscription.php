@@ -1,9 +1,7 @@
 <?php
-include('connexion.inc.php');
-
-
 
 if (!empty($_POST)) {
+
 
 	$pseudo = $_POST['pseudo'];
 	$password = $_POST['password'];
@@ -13,31 +11,9 @@ if (!empty($_POST)) {
 
 		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
 
-			include('connexion.inc.php');
-
-			$errors[]= 'Ceci n\'est pas un email valide';
-
-			$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
-
-			$response->execute(
-				array($pseudo)
-				);
-
-				if($response->rowCount == 0) {
-
-					$success = true;
-				
-				}else{
-
-					$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
-
-				}
-
-			$response->closeCursor();
-
 			
+			$errors[]= 'Ceci n\'est pas un pseudo valide';
+
 		}
 
 	}else{
@@ -51,10 +27,6 @@ if (!empty($_POST)) {
 		if(!preg_match('#^((((\w){1,100}[\.\-])?\w{1,100}[^\.\.][^.]@\w{1,200}[^\.\.]\.\w{1,50})(\.\d\.\d)?)$#', $email)) {
 			
 			$errors[]= 'Veuillez renseigner une adresse mail valide';
-
-		}else{
-
-			$success = true;
 
 		}
 
@@ -71,9 +43,6 @@ if (!empty($_POST)) {
 
 			$errors[]= 'Veuillez rentrer un mot de passe valide';
 
-		}else{
-
-			$success= true;
 		}
 
 	}else{
@@ -84,32 +53,70 @@ if (!empty($_POST)) {
 
 	if(empty($errors)){
 
+			require('connexion.inc.php');
+
+
+			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
+
+			$response->execute(
+				array($pseudo)
+				);
+
+				if($response->rowCount() > 0) {
+
+
+					$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
+
+				}
+
+			$response->closeCursor();
+
+
+			$response3 = $bdd->prepare('SELECT pseudo FROM users WHERE email = ?');
+
+			$response3->execute(
+				array($email)
+				);
+
+				if($response3->rowCount() > 0) {
+
+
+					$errors[] = 'Cette addresse possède déjà un compte chez nous. Veuillez en rentrer une autre';
+
+				}
+
+			$response3->closeCursor();
+
+		}
+
+
+	if(empty($errors)){
+
 		$hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-		$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		$response = $bdd->prepare('INSERT INTO users (pseudo, email, password) VALUES (:pseudo, :email, :password)');
+		$response1 = $bdd->prepare('INSERT INTO users (pseudo, email, password) VALUES (:pseudo, :email, :password)');
 
-		$response->bindValue(':pseudo',htmlspecialchars(mb_strtolower($pseudo)) );
-		$response->bindValue(':email',htmlspecialchars($email));
-		$response->bindValue(':password',$password);
+		$response1->bindValue(':pseudo',htmlspecialchars(mb_strtolower($pseudo)) );
+		$response1->bindValue(':email',htmlspecialchars($email));
+		$response1->bindValue(':password',$hash);
 
-		$response->execute();
+		$response1->execute();
 
-	}
+	
 
-	if($response->rowCount() != 0){
+	if($response1->rowCount() != 0){
         
             $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
 
-            $response->closeCursor();
+            $response1->closeCursor();
 
         }else{
 
             $errors[] = 'L\'ajout n\'a pas pu être effectuée.';
 
         }
-
+	}
 
 }
 
