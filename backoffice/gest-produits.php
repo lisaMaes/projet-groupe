@@ -85,7 +85,91 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 	}
 
 
+//verifie que le fichier est été envoyé
+if(isset($_FILES['monFichier']) && (isset($_POST))){
 
+    
+//verifie chaque cas d'erreur
+  switch ($_FILES['monFichier']['error']) {
+
+    case 1:
+      $error[]='La taille de fichier est supérieur à celle acceptée';
+      break;
+
+    case 2:
+      $error[]='La taille de fichier est supérieur à celle acceptée';
+      break;
+
+    case 3:
+      $error[]='Le téléchargement est incomplet. Veuillez réessayer';
+      break;
+
+    case 4:
+      $error[]='Veuillez selectionner un fichier';
+      break; 
+
+    case 6:
+      $error[]='Erreur serveur code 90001 : Le téléchargement n\'a pus ce faire. Veuillez réessayer plus tard';
+      break;
+      //90001 doit etre inscrit chez nous afin de pouvoir identifier l'erreur facilement 
+
+    case 7:
+      $error[]='Le téléchargement n\'a pu ce faire. Veuillez réessayer plus tard';
+      break;
+
+    case 8:
+      $error[]='Le téléchargement était interrompu';
+      break;
+
+    case !0://comme on a sauté des erreurs il faut verifier qu'il n'y en ai pas d'autres
+        $error[]= 'Erreur inconnue.';
+
+    default://si aucune erreur a été envoyer
+      
+
+        $extension = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['monFichier']['tmp_name']);
+        
+        if(($_FILES['monFichier']['size'])<=512000){
+
+             
+                if($extension=='image/jpeg' || $extension=='image/png'|| $extension=='image/bmp' || $extension=='image/gif'){
+
+                       
+    //recupération, deplacement et chgt du nom du fichier
+                    if(!isset($error)){
+
+                       require('include/fileNameGenerator');
+                        $newFileName = createFileName(10);
+
+                        if($extension == 'image/jpeg'){
+                            $newFileExt = '.jpg';
+            
+                        }elseif ($extension == 'image.png') {
+                            $newFileExt = '.png';
+                        }
+
+                        $finalFileName = $newFileName .$newFileExt;
+                    }
+
+                    move_uploaded_file($_FILES['monFichier']['tmp_name'], 'img_restau/'.$finalFileName);
+
+
+
+                      }else{
+
+                $error[] = 'Le format d\'image n\'est pas valide';
+
+                          }
+        }else{
+
+            $error[] = 'Veuillez choisir un fichier inférieur à 500Ko !';
+        }
+
+      break;
+  }
+
+	}
+}
 
 //si il  n'y a pas d'erreurs
 	if (!isset($tErreurs)){
@@ -98,12 +182,12 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 			$requete->bindValue(':ville',$strVille);
 			$requete->bindValue(':cp',$strCP);
 			$requete->bindValue(':tel',$strTelephone);
-			$requete->bindValue(':image','');
+			$requete->bindValue(':image',$finalFileName);
 			$requete->execute();
 
 			if ($requete->rowCount()>0)
 			{
-				$success="Le restaurant vient d'être ajouté";
+				$success[]="Le restaurant vient d'être ajouté";
 				$strId = $bdd -> lastInsertId();
 			}else
 			{
@@ -121,12 +205,12 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 			$requete->bindValue(':ville',$strVille);
 			$requete->bindValue(':cp',$strCP);
 			$requete->bindValue(':tel',$strTelephone);
-			$requete->bindValue(':image','');
+			$requete->bindValue(':image',$finalFileName);
 			$requete->execute();
 
 			if ($requete->rowCount()>0)
 			{
-				$success="Le restaurant a été modifié";
+				$success[]="Le restaurant a été modifié";
 			}
 			else
 			{
@@ -217,12 +301,13 @@ else
 
 					if(isset($success)){
 
-
-						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+						foreach ($success as $value) {
+						echo '<div class="alert alert-info" role=alert>'.$value.'</div>';
+						}
 					}
 					?>
 <!-- Formulaire de modification et création -->
-					<form class="form-horizontal" action="" method="POST">
+					<form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="ID" value="<?php echo $strId; ?>">
 						<fieldset>
 
@@ -250,7 +335,8 @@ else
 								<input type="text" name="telephone" id="telephone" class="form-control" placeholder="1234567890" maxlength=10  value="<?php echo htmlspecialchars($strTelephone); ?>">
 							</div>
 							<div class="form-group">
-
+								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
+        						<input type="file" name="monFichier">
 
 							</div>
 
