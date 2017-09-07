@@ -269,7 +269,6 @@ else
 	$strTelephone="";
 	$image="";
 
-	$requete->closeCursor();
 }
 
 

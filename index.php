@@ -56,7 +56,7 @@ $response1->closeCursor();
 
 						foreach ($data1 as $value) {
 							
-							echo'<div class="col-md-5 restaurant"><h2>'.htmlspecialchars($value['name']).'</h2><a href= "restaurant.php?ID='.htmlspecialchars($value['ID']).'"><img src= "img_restau/'.htmlspecialchars($value['image']).'" style ="width : 100%;"></a></div>';
+							echo'<div class="col-md-5" style= "height: 412px; margin: 5px; margin-bottom:40px;"><h2>'.htmlspecialchars($value['name']).'</h2><a href= "restaurant.php?ID='.htmlspecialchars($value['ID']).'"><img src= "img_restau/'.htmlspecialchars($value['image']).'" style="width : 100%; max-height:80%;"></a></div>';
 
 						}
 
