@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+require_once('include/sessions.inc.php');
+CheckSessionExpire();
+
+
 //test si le formulaire a été envoyé
 if (!empty($_POST)) {
 
@@ -122,7 +126,7 @@ if (!empty($_POST)) {
 //teste qu'une ligne à bien été insérée
 		if($response1->rowCount() != 0){
 
-			$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
+			$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.<br><br>Il ne reste plus qu\'à <a href="formconnexion.php">vous connecter</a>';
 
 			$response1->closeCursor();
 
@@ -200,53 +204,56 @@ if (!empty($_POST)) {
 
 							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
 						}
-						?>
-						<!-- formulaire d'inscription -->
+						else
+						{
+							?>
+							<!-- formulaire d'inscription -->
 
-						<form class="form-horizontal" action="" method="POST">
-							<fieldset>
+							<form class="form-horizontal" action="" method="POST">
+								<fieldset>
 
-								<!-- Form Name -->
-								<legend>Rejoignez-nous</legend>
+									<!-- Form Name -->
+									<legend>Rejoignez-nous</legend>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
-									<div class="col-md-4">
-										<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
+									<!-- Text input-->
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
+										<div class="col-md-4">
+											<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
 
+										</div>
 									</div>
-								</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="email">Email</label>  
-									<div class="col-md-4">
-										<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
+									<!-- Text input-->
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="email">Email</label>  
+										<div class="col-md-4">
+											<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
 
+										</div>
 									</div>
-								</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="password">Mot de passe</label>  
-									<div class="col-md-4">
-										<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
+									<!-- Text input-->
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="password">Mot de passe</label>  
+										<div class="col-md-4">
+											<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
 
+										</div>
 									</div>
-								</div>
 
-								<!-- Button -->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="button"></label>
-									<div class="col-md-4">
-										<button id="button" name="button" class="btn btn-info">Valider</button>
+									<!-- Button -->
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="button"></label>
+										<div class="col-md-4">
+											<button id="button" name="button" class="btn btn-info">Valider</button>
+										</div>
 									</div>
-								</div>
 
-							</fieldset>
-						</form>
-						<?php 
+								</fieldset>
+							</form>
+							<?php 
+						}
 					}
 					?>
 
