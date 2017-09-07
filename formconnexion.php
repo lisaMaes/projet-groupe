@@ -27,7 +27,7 @@ if(!empty($_POST)){
 
 
 	if(!isset($errors)){
-		include('connexion.inc.php');
+		include('include/connexion.inc.php');
 		
 		$response = $bdd->prepare("SELECT password FROM users WHERE email= ?");
 
@@ -82,7 +82,7 @@ if(!empty($_POST)){
 			<div class="row">
 				<div class="col-md-12">
 					<?php 
-					require('menu.inc.php');
+					require('include/menu.inc.php');
 					?>
 				</div>
 			</div>

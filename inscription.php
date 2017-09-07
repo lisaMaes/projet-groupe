@@ -1,5 +1,5 @@
 <?php
-
+//test si le formulaire a été envoyé
 if (!empty($_POST)) {
 
 
@@ -7,8 +7,11 @@ if (!empty($_POST)) {
 	$password = $_POST['password'];
 	$email =$_POST['email'];
 	
+	//teste si le pseud est valide et rempli
 	if(isset($pseudo) && !empty($pseudo)){
 
+
+//protection contre injection sur le pseudo
 		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
 
 			
@@ -22,8 +25,11 @@ if (!empty($_POST)) {
 
 	}
 
+//verifie que le mail soit rempli et valide
 	if(isset($email) && !empty($email)){
 
+
+//verifie qu'il n'y est pas d'injection via le mail
 		if(!preg_match('#^((((\w){1,100}[\.\-])?\w{1,100}[^\.\.][^.]@\w{1,200}[^\.\.]\.\w{1,50})(\.\d\.\d)?)$#', $email)) {
 			
 			$errors[]= 'Veuillez renseigner une adresse mail valide';
@@ -36,9 +42,10 @@ if (!empty($_POST)) {
 
 	}
 
-
+//verifie la validité et le remplissage du mot de passe
 	if(isset($password) && !empty($password)){
 
+//verifie qu'il n'y est pas d'injection via mot de passe
 		if(!preg_match('#^.{3,50}$#', $password)){
 
 			$errors[]= 'Veuillez rentrer un mot de passe valide';
@@ -51,17 +58,19 @@ if (!empty($_POST)) {
 
 	}
 
+
+// Si le proccessus est valide jusque là 
 	if(empty($errors)){
 
-			require('connexion.inc.php');
+			require('include/connexion.inc.php');
 
-
+//connexion base pour doublon pseudo
 			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
 
 			$response->execute(
 				array($pseudo)
 				);
-
+//verifie qu'il n'y ait pas de doublon pseudo
 				if($response->rowCount() > 0) {
 
 
@@ -71,13 +80,15 @@ if (!empty($_POST)) {
 
 			$response->closeCursor();
 
-
+//connexion base doublon email
 			$response3 = $bdd->prepare('SELECT pseudo FROM users WHERE email = ?');
 
 			$response3->execute(
 				array($email)
 				);
 
+
+//verifie qu'il n'y ait pas de doublon d'email
 				if($response3->rowCount() > 0) {
 
 
@@ -92,9 +103,10 @@ if (!empty($_POST)) {
 
 	if(empty($errors)){
 
+//création empreinte du mot de passe
 		$hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-
+//connexion en base pour l'insertion
 		$response1 = $bdd->prepare('INSERT INTO users (pseudo, email, password) VALUES (:pseudo, :email, :password)');
 
 		$response1->bindValue(':pseudo',htmlspecialchars(mb_strtolower($pseudo)) );
@@ -104,7 +116,7 @@ if (!empty($_POST)) {
 		$response1->execute();
 
 	
-
+//test qu'une ligne à bien été insérée
 	if($response1->rowCount() != 0){
         
             $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
@@ -149,7 +161,7 @@ if (!empty($_POST)) {
 			<div class="row">
 				<div class="col-md-12">
 					<?php 
-					require('menu.inc.php');
+					require('include/menu.inc.php');
 					?>
 				</div>
 			</div>
@@ -158,6 +170,7 @@ if (!empty($_POST)) {
 				<div class="col-md-offset-2 col-md-8">
 
 					<?php 
+					//affichage des erreurs
 						if(isset($errors)){
 
 							foreach ($errors as $error) {
@@ -165,14 +178,14 @@ if (!empty($_POST)) {
 							echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
 							}
 						}
-
+//affichage du message de succès
 						if(isset($success)){
 
 
 							echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
 						}
 					 ?>
-
+<!-- formulaire d'inscription -->
 					<form class="form-horizontal" action="" method="POST">
 						<fieldset>
 
