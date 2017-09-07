@@ -1,21 +1,19 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['type']) OR $_SESSION['type']<>1)
-{
-	header('HTTP/1.0 403 Forbidden');
-}
+require_once('../include/sessions.inc.php');
+CheckUnauthent();
+CheckSessionExpire();
 
 
 
 
-
-if (isset($_POST['ID']) AND !empty($_POST['ID']) )
+if (isset($_POST['ID']) AND !empty($_POST['ID']) AND isset($_POST['TOKEN']) AND ($_POST['TOKEN']==$_SESSION['USER']['token']))
 {
 
 	if (filter_var($_POST['ID'],FILTER_VALIDATE_INT))
 	{
-		require_once('../connexion.inc.php');
+		require_once('../include/connexion.inc.php');
 		$requete=$bdd->prepare('DELETE FROM restaurants WHERE ID=?');
 		$requete->execute(array($_POST['ID']));
 
@@ -160,6 +158,7 @@ if (isset($_POST['ID']) AND !empty($_POST['ID']) )
 
 					<form name="FrmMain" action="" method="post">
 						<input type="hidden" name="ID">
+						<input type="hidden" name="TOKEN" value="<?php echo $_SESSION['USER']['token']; ?>">
 					</form>
 				</div>
 			</div>

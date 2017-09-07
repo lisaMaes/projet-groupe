@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once('include/sessions.inc.php');
+CheckSessionExpire();
 
 if(isset($_SESSION['USER']['ID']) && !empty($_SESSION['USER']['ID']))
 {
@@ -52,8 +54,7 @@ if ($strId>0 && $strId<=9999999999)
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../styles/jquery.dataTables.min.css">
-	<link rel="stylesheet" href="../styles/style.css">
+	<link rel="stylesheet" href="styles/style.css">
 
 </head>
 <body>
@@ -118,7 +119,6 @@ if ($strId>0 && $strId<=9999999999)
 	<!-- jQuery first, then Tether, then Bootstrap JS. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-	<script src="../scripts/jquery.dataTables.min.js"></script>
 
 </body>
 </html>

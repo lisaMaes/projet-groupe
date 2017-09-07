@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+require_once('../include/sessions.inc.php');
+CheckUnauthent();
+CheckSessionExpire();
+
+
 
 //recupère l'id
 if (isset($_POST['ID']))
@@ -86,145 +93,145 @@ if (!empty($_POST) && isset($_POST['btnEnvoyer']))
 
 
 //verifie que le fichier est été envoyé
-if(isset($_FILES['monFichier']) && (isset($_POST))){
+	if(isset($_FILES['monFichier']) && (isset($_POST))){
 
-    
+		
 //verifie chaque cas d'erreur
-  switch ($_FILES['monFichier']['error']) {
+		switch ($_FILES['monFichier']['error']) {
 
-    case 1:
-      $tErreurs[]='La taille de fichier est supérieur à celle acceptée';
-      break;
+			case 1:
+			$tErreurs[]='La taille de fichier est supérieur à celle acceptée';
+			break;
 
-    case 2:
-      $tErreurs[]='La taille de fichier est supérieur à celle acceptée';
-      break;
+			case 2:
+			$tErreurs[]='La taille de fichier est supérieur à celle acceptée';
+			break;
 
-    case 3:
-      $tErreurs[]='Le téléchargement est incomplet. Veuillez réessayer';
-      break;
+			case 3:
+			$tErreurs[]='Le téléchargement est incomplet. Veuillez réessayer';
+			break;
 
-    case 4:
-      $tErreurs[]='Veuillez selectionner un fichier';
-      break; 
+			case 4:
+			$tErreurs[]='Veuillez selectionner un fichier';
+			break; 
 
-    case 6:
-      $tErreurs[]='Erreur serveur code 90001 : Le téléchargement n\'a pus ce faire. Veuillez réessayer plus tard';
-      break;
+			case 6:
+			$tErreurs[]='Erreur serveur code 90001 : Le téléchargement n\'a pus ce faire. Veuillez réessayer plus tard';
+			break;
       //90001 doit etre inscrit chez nous afin de pouvoir identifier l'erreur facilement 
 
-    case 7:
-      $tErreurs[]='Le téléchargement n\'a pu ce faire. Veuillez réessayer plus tard';
-      break;
+			case 7:
+			$tErreurs[]='Le téléchargement n\'a pu ce faire. Veuillez réessayer plus tard';
+			break;
 
-    case 8:
-      $tErreurs[]='Le téléchargement était interrompu';
-      break;
+			case 8:
+			$tErreurs[]='Le téléchargement était interrompu';
+			break;
 
     case !0://comme on a sauté des erreurs il faut verifier qu'il n'y en ai pas d'autres
-        $tErreurs[]= 'Erreur inconnue.';
+    $tErreurs[]= 'Erreur inconnue.';
 
     default://si aucune erreur a été envoyer
-      
+    
 
-        $extension = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['monFichier']['tmp_name']);
-        
-        if(($_FILES['monFichier']['size'])<=512000){
+    $extension = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $_FILES['monFichier']['tmp_name']);
+    
+    if(($_FILES['monFichier']['size'])<=512000){
 
-             
-                if($extension=='image/jpeg' || $extension=='image/png'|| $extension=='image/bmp' || $extension=='image/gif'){
+    	
+    	if($extension=='image/jpeg' || $extension=='image/png'|| $extension=='image/bmp' || $extension=='image/gif'){
 
-                       
+    		
     //recupération, deplacement et chgt du nom du fichier
-                    if(!isset($tErreurs)){
+    		if(!isset($tErreurs)){
 
-                       require('../include/fileNameGenerator.php');
-                        $newFileName = createFileName(10);
+    			require('../include/fileNameGenerator.php');
+    			$newFileName = createFileName(10);
 
-                        if($extension == 'image/jpeg'){
-                            $newFileExt = '.jpg';
-            
-                        }elseif ($extension == 'image.png') {
-                            $newFileExt = '.png';
-                        }
+    			if($extension == 'image/jpeg'){
+    				$newFileExt = '.jpg';
+    				
+    			}elseif ($extension == 'image.png') {
+    				$newFileExt = '.png';
+    			}
 
-                        $finalFileName = $newFileName .$newFileExt;
-                    }
+    			$finalFileName = $newFileName .$newFileExt;
+    		}
 
-                    move_uploaded_file($_FILES['monFichier']['tmp_name'], '../img_restau/'.$finalFileName);
+    		move_uploaded_file($_FILES['monFichier']['tmp_name'], '../img_restau/'.$finalFileName);
 
 
 
-                      }else{
+    	}else{
 
-                $tErreurs[] = 'Le format d\'image n\'est pas valide';
+    		$tErreurs[] = 'Le format d\'image n\'est pas valide';
 
-                          }
-        }else{
+    	}
+    }else{
 
-            $tErreurs[] = 'Veuillez choisir un fichier inférieur à 500Ko !';
-        }
+    	$tErreurs[] = 'Veuillez choisir un fichier inférieur à 500Ko !';
+    }
 
-      break;
-  }
+    break;
+}
 
-	
+
 }
 
 //si il  n'y a pas d'erreurs
-	if (!isset($tErreurs)){
+if (!isset($tErreurs)){
 
 //soit INSERT d'un nouvel élément si Id vide
-		if 	($strId==0){
-			$requete=$bdd->prepare('INSERT INTO restaurants (name,adress,city,zipcode,telephone,image) VALUES(:nom,:adresse,:ville,:cp,:tel,:image)');
-			$requete->bindValue(':nom',$strLibelle);
-			$requete->bindValue(':adresse',$strAdresse);
-			$requete->bindValue(':ville',$strVille);
-			$requete->bindValue(':cp',$strCP);
-			$requete->bindValue(':tel',$strTelephone);
-			$requete->bindValue(':image',$finalFileName);
-			$requete->execute();
+	if 	($strId==0){
+		$requete=$bdd->prepare('INSERT INTO restaurants (name,adress,city,zipcode,telephone,image) VALUES(:nom,:adresse,:ville,:cp,:tel,:image)');
+		$requete->bindValue(':nom',$strLibelle);
+		$requete->bindValue(':adresse',$strAdresse);
+		$requete->bindValue(':ville',$strVille);
+		$requete->bindValue(':cp',$strCP);
+		$requete->bindValue(':tel',$strTelephone);
+		$requete->bindValue(':image',$finalFileName);
+		$requete->execute();
 
-			if ($requete->rowCount()>0)
-			{
-				$success[]="Le restaurant vient d'être ajouté";
-				$strId = $bdd -> lastInsertId();
-				$requete->closeCursor();
-			}else
-			{
-				$tErreurs[]="erreur à l'enregistrement, contactez l'admin";
-				$requete->closeCursor();
-			}
-
+		if ($requete->rowCount()>0)
+		{
+			$success[]="Le restaurant vient d'être ajouté";
+			$strId = $bdd -> lastInsertId();
+			$requete->closeCursor();
+		}else
+		{
+			$tErreurs[]="erreur à l'enregistrement, contactez l'admin";
+			$requete->closeCursor();
 		}
+
+	}
 		//soit mise à jour de la fiche existante
+	else
+	{
+		$requete=$bdd->prepare('UPDATE restaurants SET name=:nom,adress=:adresse,city=:ville,zipcode=:cp,telephone=:tel,image=:image WHERE ID=:id');
+		$requete->bindValue(':id',$strId);
+		$requete->bindValue(':nom',$strLibelle);
+		$requete->bindValue(':adresse',$strAdresse);
+		$requete->bindValue(':ville',$strVille);
+		$requete->bindValue(':cp',$strCP);
+		$requete->bindValue(':tel',$strTelephone);
+		$requete->bindValue(':image',$finalFileName);
+		$requete->execute();
+
+		if ($requete->rowCount()>0)
+		{
+			$success[]="Le restaurant a été modifié";
+			$requete->closeCursor();
+		}
 		else
 		{
-			$requete=$bdd->prepare('UPDATE restaurants SET name=:nom,adress=:adresse,city=:ville,zipcode=:cp,telephone=:tel,image=:image WHERE ID=:id');
-			$requete->bindValue(':id',$strId);
-			$requete->bindValue(':nom',$strLibelle);
-			$requete->bindValue(':adresse',$strAdresse);
-			$requete->bindValue(':ville',$strVille);
-			$requete->bindValue(':cp',$strCP);
-			$requete->bindValue(':tel',$strTelephone);
-			$requete->bindValue(':image',$finalFileName);
-			$requete->execute();
+			$tErreurs[]="erreur à la modification, contactez l'admin";
 
-			if ($requete->rowCount()>0)
-			{
-				$success[]="Le restaurant a été modifié";
-				$requete->closeCursor();
-			}
-			else
-			{
-				$tErreurs[]="erreur à la modification, contactez l'admin";
-
-				$requete->closeCursor();
-			}
-
-			
+			$requete->closeCursor();
 		}
+
+		
 	}
+}
 }
 
 
@@ -315,12 +322,12 @@ else
 					if(isset($success)){
 
 						foreach ($success as $value) {
-						echo '<div class="alert alert-info" role=alert>'.$value.'</div>';
+							echo '<div class="alert alert-info" role=alert>'.$value.'</div>';
 						}
 					}
 
 					?>
-<!-- Formulaire de modification et création -->
+					<!-- Formulaire de modification et création -->
 					<form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="ID" value="<?php echo $strId; ?>">
 						<fieldset>
@@ -350,17 +357,17 @@ else
 							</div>
 							<div class="form-group">
 								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
-        						<input type="file" name="monFichier">
+								<input type="file" name="monFichier">
 
 							</div>
 							<div>
 								
 								<?php if(!empty($image)){
 
-										echo '<img src="../img_restau/'.htmlspecialchars($image).'"><br><br>';
+									echo '<img src="../img_restau/'.htmlspecialchars($image).'"><br><br>';
 
-									} 
-									?>
+								} 
+								?>
 
 							</div>
 

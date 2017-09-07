@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-
+require_once('include/sessions.inc.php');
+CheckSessionExpire();
 
 
 //verifie que le formulaire soit rempli

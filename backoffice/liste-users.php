@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+require_once('../include/sessions.inc.php');
+CheckUnauthent();
+CheckSessionExpire();
+
+
 
 if (isset($_POST['ID']) AND !empty($_POST['ID']) )
 {
