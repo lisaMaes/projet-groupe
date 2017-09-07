@@ -10,9 +10,37 @@ if (!empty($_POST)) {
 	//teste si le pseud est valide et rempli
 	if(isset($pseudo) && !empty($pseudo)){
 
+<<<<<<< HEAD
 
 //protection contre injection sur le pseudo
 		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
+=======
+		if(!preg_match('#^([0-9a-z \-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{3,30})$#', $pseudo)){
+
+			include('connexion.inc.php');
+
+			$errors[]= 'Ceci n\'est pas un email valide';
+
+			$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			$response = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
+
+			$response->execute(
+				array($pseudo)
+				);
+
+			if($response->rowCount == 0) {
+
+				$success = true;
+				
+			}else{
+
+				$errors[] = 'Veuillez choisir un autre pseudo. Celui ci est déjà existant';
+
+			}
+
+			$response->closeCursor();
+>>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
 			
 			$errors[]= 'Ceci n\'est pas un pseudo valide';
@@ -96,6 +124,7 @@ if (!empty($_POST)) {
 
 				}
 
+<<<<<<< HEAD
 			$response3->closeCursor();
 
 		}
@@ -122,13 +151,25 @@ if (!empty($_POST)) {
             $success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectuée.';
 
             $response1->closeCursor();
+=======
+	if($response->rowCount() != 0){
 
-        }else{
+		$success = 'L\'ajout du compte '.htmlspecialchars($pseudo).' : '.htmlspecialchars($email). ' est bien effectué.';
+>>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
-            $errors[] = 'L\'ajout n\'a pas pu être effectuée.';
+		$response->closeCursor();
 
+	}else{
+
+		$errors[] = 'L\'ajout n\'a pas pu être effectué.';
+
+<<<<<<< HEAD
         }
 	}
+=======
+	}
+
+>>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
 }
 
@@ -152,7 +193,7 @@ if (!empty($_POST)) {
 
 	<header>
 		<h1>
-			Eat-eee !! - Inscriptions
+			Eat-eee !! - Inscription
 		</h1>
 	</header> 
 
@@ -170,14 +211,18 @@ if (!empty($_POST)) {
 				<div class="col-md-offset-2 col-md-8">
 
 					<?php 
+<<<<<<< HEAD
 					//affichage des erreurs
 						if(isset($errors)){
+=======
+					if(isset($errors)){
+>>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 
-							foreach ($errors as $error) {
+						foreach ($errors as $error) {
 
 							echo '<div class="alert alert-danger" role=alert>'.$error.'</div>';
-							}
 						}
+<<<<<<< HEAD
 //affichage du message de succès
 						if(isset($success)){
 
@@ -186,49 +231,60 @@ if (!empty($_POST)) {
 						}
 					 ?>
 <!-- formulaire d'inscription -->
+=======
+					}
+
+					if(isset($success)){
+
+
+						echo '<div class="alert alert-info" role=alert>'.$success.'</div>';
+					}
+					?>
+
+>>>>>>> 2b311c775f727cd22bbd8f3015e913efb4919e41
 					<form class="form-horizontal" action="" method="POST">
 						<fieldset>
 
-						<!-- Form Name -->
+							<!-- Form Name -->
 							<legend>Rejoignez-nous</legend>
 
 							<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
-									<div class="col-md-4">
-										<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="pseudo">Pseudo</label>  
+								<div class="col-md-4">
+									<input id="pseudo" name="pseudo" placeholder="" class="form-control input-md" required="" type="text">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="email">Email</label>  
-									<div class="col-md-4">
-										<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="email">Email</label>  
+								<div class="col-md-4">
+									<input id="email" name="email" placeholder="jean@test.fr" class="form-control input-md" required="" type="email">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="password">Mot de passe</label>  
-									<div class="col-md-4">
-										<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="password">Mot de passe</label>  
+								<div class="col-md-4">
+									<input id="password" name="password" placeholder="" class="form-control input-md" required="" type="password">
 
-									</div>
 								</div>
+							</div>
 
-								<!-- Button -->
-								<div class="form-group">
-									<label class="col-md-4 control-label" for="button"></label>
-									<div class="col-md-4">
-										<button id="button" name="button" class="btn btn-info">Valider</button>
-									</div>
+							<!-- Button -->
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="button"></label>
+								<div class="col-md-4">
+									<button id="button" name="button" class="btn btn-info">Valider</button>
 								</div>
+							</div>
 
-							</fieldset>
-						</form>
+						</fieldset>
+					</form>
 
 
 				</div>
